@@ -1,8 +1,10 @@
 <script lang="ts">
+	import NavBar from "./NavBar/NavBar.svelte";
 	import UsageIndicator from "./UsageIndicator/UsageIndicator.svelte";
 </script>
 
 <main class="side-bar">
+	<NavBar />
 	<UsageIndicator used={50} total={100} />
 </main>
 
