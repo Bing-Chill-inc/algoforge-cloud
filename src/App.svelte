@@ -11,7 +11,6 @@
     <!-- <CloudContent />
     <SideBar /> -->
     <Login />
-    <MenuCompte />
 </main>
 
 <style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import Theme from "../Theme.svelte";
+	import Theme from "../Theme/Theme.svelte";
 
 	let isMenuOpen = false;
 
@@ -32,7 +32,7 @@
 		<div class="menu">
 			<button class="menu-item" aria-label="Logout">Déconnexion</button>
 			<div class="menu-item">
-				<Theme />
+				<!-- <Theme /> -->
 			</div>
 		</div>
 	{/if}
