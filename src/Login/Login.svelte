@@ -126,6 +126,7 @@
     width: 200px;
     transform: rotate(-37deg);
     pointer-events: none;
+    animation: float-1 3s ease-in-out infinite alternate;
   }
 
   .floating-image-2 {
@@ -136,6 +137,25 @@
     width: 200px;
     transform: rotate(8deg);
     pointer-events: none;
+    animation: float-2 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes float-1 {
+    0% {
+      transform: rotate(-37deg) translateY(0);
+    }
+    100% {
+      transform: rotate(-37deg) translateY(10px);
+    }
+  }
+
+  @keyframes float-2 {
+    0% {
+      transform: rotate(8deg) translateY(0);
+    }
+    100% {
+      transform: rotate(8deg) translateY(-10px);
+    }
   }
 
   .login-box {
