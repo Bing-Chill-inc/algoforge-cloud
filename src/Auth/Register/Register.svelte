@@ -7,6 +7,8 @@
     }
   </script>
   
-  <AuthLayout title="Inscription">
-    <RegisterForm onSuccess={handleSuccess} />
-  </AuthLayout>
+<main class="register">
+    <AuthLayout title="Inscription">
+        <RegisterForm onSuccess={handleSuccess} />
+    </AuthLayout>
+</main>

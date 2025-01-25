@@ -1,44 +1,38 @@
 <script lang="ts">
     export let onSuccess: () => void;
-  
-    let email: string = "";
-    let password: string = "";
-    
-    let emailError: string = "";
-    let passwordError: string = "";
 
-    // Fonction pour gérer la soumission du formulaire de connexion
-    async function handleLogin(event: Event) {
+    let email: string = "";
+
+    let emailError: string = "";
+
+    // Fonction pour gérer la soumission du formulaire de mot de passe oublié
+    async function handleForgotPassword(event: Event) {
         event.preventDefault();
-  
+
         emailError = "";
-        passwordError = "";
-  
+
         if (!email) {
             emailError = "Veuillez entrer votre email";
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             emailError = "Veuillez entrer une adresse email valide";
         }
-  
-        if (!password) {
-            passwordError = "Veuillez entrer votre mot de passe";
-        }
-  
-        if (!emailError && !passwordError) {
+
+        if (!emailError) {
             try {
-                const response = await fetch("/api/users/login", {
+                const response = await fetch("/api/users/recover", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email })
                 });
-  
+
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.message || "Erreur de connexion");
+                    throw new Error(errorData.message || "Erreur lors de la réinitialisation du mot de passe");
                 }
-  
+
                 const data = await response.json();
-                console.log("Connexion réussie :", data);
+                console.log("Email de réinitialisation envoyé :", data);
+                alert("Un email de réinitialisation de mot de passe vous a été envoyé");
                 onSuccess && onSuccess();
             } catch (error) {
                 if (error instanceof Error) {
@@ -50,9 +44,9 @@
         }
     }
 </script>
-  
-<main class="login-form">
-    <form on:submit={handleLogin} novalidate>
+
+<main class="forgot-password-form">
+    <form on:submit={handleForgotPassword} novalidate>
         <div class="user-box">
             <input type="text" id="email" bind:value={email} required />
             <label for="email">Email</label>
@@ -60,17 +54,10 @@
                 <span class="error-message">{emailError}</span>
             {/if}
         </div>
-        <div class="user-box">
-            <input type="password" id="password" bind:value={password} required />
-            <label for="password">Mot de passe</label>
-            {#if passwordError}
-                <span class="error-message">{passwordError}</span>
-            {/if}
-        </div>
-        <button type="submit">Se connecter</button>
+        <button type="submit">Envoyer</button>
     </form>
 </main>
-  
+
 <style>
     .user-box {
         display: flex;

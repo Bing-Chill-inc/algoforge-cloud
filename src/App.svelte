@@ -3,6 +3,7 @@
     import SideBar from "./SideBar/SideBar.svelte";
     import Login from "./Auth/Login/Login.svelte";
     import Register from "./Auth/Register/Register.svelte";
+    import ForgotPassword from "./Auth/ForgotPassword/ForgotPassword.svelte";
     import MenuCompte from "./MenuCompte/MenuCompte.svelte";
     import { getCookie, setCookie } from "./utils";
 
@@ -12,7 +13,8 @@
     <!-- <CloudContent />
     <SideBar /> -->
     <!-- <Login /> -->
-    <Register />
+    <!-- <Register /> -->
+    <ForgotPassword />
 </main>
 
 <style>
