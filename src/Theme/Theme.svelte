@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { listeTheme } from './themes';
+    import { listTheme } from './themes';
     import { theme } from './themeStore';
 </script>
 
@@ -9,8 +9,8 @@
         id="select-theme"
         bind:value={$theme}
     >
-        {#each listeTheme as theme}
-            <option value={theme.nom}>{theme.nom}</option>
+        {#each listTheme as theme}
+            <option value={theme.name}>{theme.name}</option>
         {/each}
     </select>
 </main>
@@ -18,7 +18,7 @@
 <style>
     .select-theme {
         display: flex;
-        justify-content: center;
+        justify-content: center; 
         align-items: center;
     }
 

@@ -1,5 +1,5 @@
 export interface Theme {
-	nom: string;
+	name: string;
 	bgColor: string;
 	bgColorSecondary: string;
 	borderColor: string;
@@ -21,9 +21,9 @@ export interface Theme {
 	baseGlowColor: number;
 }
 
-export const listeTheme: Theme[] = [
+export const listTheme: Theme[] = [
 	{
-		nom: "Thème Pacifique",
+		name: "Thème Pacifique",
 		bgColor: "#F2F5F8",
 		bgColorSecondary: "#E5EAF0",
 		borderColor: "#BECBDA",
@@ -45,7 +45,7 @@ export const listeTheme: Theme[] = [
 		baseGlowColor: 211,
 	},
 	{
-		nom: "Thème AlgoForge",
+		name: "Thème AlgoForge",
 		bgColor: "#161e27",
 		bgColorSecondary: "#0f141a",
 		borderColor: "#838787",
@@ -67,7 +67,7 @@ export const listeTheme: Theme[] = [
 		baseGlowColor: 225,
 	},
 	{
-		nom: "Thème FlashBang",
+		name: "Thème FlashBang",
 		bgColor: "#FFFFFF",
 		bgColorSecondary: "#FFFFFF",
 		borderColor: "#000000",

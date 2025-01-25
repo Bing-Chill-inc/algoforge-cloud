@@ -1,7 +1,8 @@
 <script lang="ts">
     import CloudContent from "./CloudContent/CloudContent.svelte";
     import SideBar from "./SideBar/SideBar.svelte";
-    import Login from "./Login/Login.svelte";
+    import Login from "./Auth/Login/Login.svelte";
+    import Register from "./Auth/Register/Register.svelte";
     import MenuCompte from "./MenuCompte/MenuCompte.svelte";
     import { getCookie, setCookie } from "./utils";
 
@@ -10,7 +11,8 @@
 <main>
     <!-- <CloudContent />
     <SideBar /> -->
-    <Login />
+    <!-- <Login /> -->
+    <Register />
 </main>
 
 <style>

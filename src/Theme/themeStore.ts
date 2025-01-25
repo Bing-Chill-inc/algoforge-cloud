@@ -1,15 +1,15 @@
 import { writable } from "svelte/store";
 import { getCookie, setCookie } from "../utils";
-import { listeTheme } from "./themes";
+import { listTheme } from "./themes";
 import type { Theme } from "./themes";
 
 function createThemeStore() {
-	const nomTheme = getCookie("theme") || listeTheme[0].nom;
-	const { subscribe, set } = writable(nomTheme);
+	const nameTheme = getCookie("theme") || listTheme[0].name;
+	const { subscribe, set } = writable(nameTheme);
 
 	function applyTheme(themeName: string) {
-		const selectedTheme = listeTheme.find(
-			(theme) => theme.nom === themeName,
+		const selectedTheme = listTheme.find(
+			(theme) => theme.name === themeName,
 		);
 		if (selectedTheme) {
 			for (let key of Object.keys(selectedTheme) as (keyof Theme)[]) {
@@ -23,9 +23,9 @@ function createThemeStore() {
 	}
 
 	function getValueTheme(key: keyof Theme) {
-		const currentThemeName = getCookie("theme") || nomTheme;
-		const selectedTheme = listeTheme.find(
-			(theme) => theme.nom === currentThemeName,
+		const currentThemeName = getCookie("theme") || nameTheme;
+		const selectedTheme = listTheme.find(
+			(theme) => theme.name === currentThemeName,
 		);
 		if (selectedTheme) {
 			return selectedTheme[key];
@@ -34,7 +34,7 @@ function createThemeStore() {
 	}
 
 	// Appliquer le thème initial
-	applyTheme(nomTheme);
+	applyTheme(nameTheme);
 
 	return {
 		subscribe,
