@@ -4,27 +4,29 @@
 	let email: string = "";
 	let password: string = "";
 
-	let emailError: string = "";
-	let passwordError: string = "";
+	let messageError: string = "";
+	let hasError = false;
 
 	// Fonction pour gérer la soumission du formulaire de connexion
 	async function handleLogin(event: Event) {
 		event.preventDefault();
 
-		emailError = "";
-		passwordError = "";
+		messageError = "";
+		hasError = false;
 
 		if (!email) {
-			emailError = "Veuillez entrer votre email";
+			hasError = true;
 		} else if (!/\S+@\S+\.\S+/.test(email)) {
-			emailError = "Veuillez entrer une adresse email valide";
+			hasError = true;
 		}
 
 		if (!password) {
-			passwordError = "Veuillez entrer votre mot de passe";
+			hasError = true;
 		}
 
-		if (!emailError && !passwordError) {
+		if (hasError) {
+			messageError = "Email ou mot de passe invalide.";
+		} else {
 			try {
 				const response = await fetch("/api/users/login", {
 					method: "POST",
@@ -56,8 +58,8 @@
 		<div class="user-box">
 			<input type="text" id="email" bind:value={email} required />
 			<label for="email">Email</label>
-			{#if emailError}
-				<span class="error-message">{emailError}</span>
+			{#if messageError}
+				<span class="error-message">{messageError}</span>
 			{/if}
 		</div>
 		<div class="user-box">
@@ -68,8 +70,8 @@
 				required
 			/>
 			<label for="password">Mot de passe</label>
-			{#if passwordError}
-				<span class="error-message">{passwordError}</span>
+			{#if messageError}
+				<span class="error-message">{messageError}</span>
 			{/if}
 		</div>
 		<button type="submit">Se connecter</button>
