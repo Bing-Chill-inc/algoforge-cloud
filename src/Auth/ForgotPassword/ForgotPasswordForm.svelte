@@ -1,6 +1,4 @@
 <script lang="ts">
-	export let onSuccess: () => void;
-
 	let email: string = "";
 
 	let emailError: string = "";
@@ -38,7 +36,6 @@
 				alert(
 					"Un email de réinitialisation de mot de passe vous a été envoyé",
 				);
-				onSuccess && onSuccess();
 			} catch (error) {
 				if (error instanceof Error) {
 					alert(error.message);

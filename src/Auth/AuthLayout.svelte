@@ -88,15 +88,15 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 		width: 200px;
 		transform: rotate(-37deg);
 		pointer-events: none;
-		animation: float-1 3s ease-in-out infinite alternate;
+		animation: float-1-circle 12s ease-in-out infinite;
 		fill: var(--fgColor);
 	}
 
 	.floating-image-2 {
 		position: absolute;
 		z-index: 2;
-		bottom: -100px;
-		right: -120px;
+		bottom: -50px;
+		right: -60px;
 		width: 80px;
 		transform: rotate(8deg);
 		pointer-events: none;
@@ -104,12 +104,21 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 		fill: var(--fgColor);
 	}
 
-	@keyframes float-1 {
+	@keyframes float-1-circle {
 		0% {
-			transform: rotate(-37deg) translateY(0);
+			transform: rotate(-37deg) translate(0, 0);
+		}
+		25% {
+			transform: rotate(-37deg) translate(30px, 20px);
+		}
+		50% {
+			transform: rotate(-37deg) translate(0, 40px);
+		}
+		75% {
+			transform: rotate(-37deg) translate(-30px, 20px);
 		}
 		100% {
-			transform: rotate(-37deg) translateY(15px);
+			transform: rotate(-37deg) translate(0, 0);
 		}
 	}
 
@@ -118,7 +127,7 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 			transform: rotate(8deg) translateY(0);
 		}
 		100% {
-			transform: rotate(8deg) translateY(-10px);
+			transform: rotate(30deg) translateY(-15px);
 		}
 	}
 

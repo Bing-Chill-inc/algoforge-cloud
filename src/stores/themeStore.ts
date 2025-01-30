@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
-import { getCookie, setCookie } from "../utils";
-import { listTheme } from "./themes";
-import type { Theme } from "./themes";
+import { getCookie, setCookie } from "../utils/utils";
+import { listTheme } from "../utils/themes";
+import type { Theme } from "../utils/themes";
 
 function createThemeStore() {
 	const nameTheme = getCookie("theme") || listTheme[0].name;
@@ -47,3 +47,11 @@ function createThemeStore() {
 }
 
 export const theme = createThemeStore();
+
+export function getPositionTheme(nomTheme: string) {
+	return listTheme.findIndex((theme) => theme.name === nomTheme);
+}
+
+export function getThemeNameFromPosition(position: number) {
+	return listTheme[position].name;
+}

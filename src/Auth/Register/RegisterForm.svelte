@@ -1,6 +1,4 @@
 <script lang="ts">
-	export let onSuccess: () => void;
-
 	let email: string = "";
 	let password: string = "";
 	let pseudo: string = "";
@@ -25,15 +23,27 @@
 		if (!email) {
 			emailError = "Veuillez entrer votre email";
 		} else if (!/\S+@\S+\.\S+/.test(email)) {
-			emailError = "Veuillez entrer une adresse email valide";
+			emailError = "Adresse email mal formée";
 		}
 		if (!password) {
-			passwordError = "Veuillez entrer votre mot de passe";
+			passwordError = "Requis";
+		}
+		if (
+			password.length < 8 ||
+			!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*\W)|(?=.*[a-z])(?=.*\d)(?=.*\W)|(?=.*[A-Z])(?=.*\d)(?=.*\W)/.test(
+				password,
+			)
+		) {
+			passwordError =
+				"Doit comporter au moins 8 caractères et contenir trois des quatre types de caractères suivants : majuscules, minuscules, chiffres et symboles";
 		}
 		if (!passwordConfirm) {
-			passwordConfirmError = "Veuillez confirmer votre mot de passe";
+			passwordConfirmError = "Requis";
 		}
-
+		console.log(password, passwordConfirm);
+		if (password !== passwordConfirm) {
+			passwordConfirmError = "Les mots de passe ne correspondent pas";
+		}
 		if (
 			!pseudoError &&
 			!emailError &&
@@ -56,7 +66,7 @@
 
 				const data = await response.json();
 				console.log("Inscription réussie :", data);
-				onSuccess && onSuccess();
+				window.location.hash = "#/login";
 			} catch (error) {
 				if (error instanceof Error) {
 					alert(error.message);
@@ -97,7 +107,12 @@
 			{/if}
 		</div>
 		<div class="user-box">
-			<input type="password" id="password-confirm" required />
+			<input
+				type="password"
+				id="password-confirm"
+				bind:value={passwordConfirm}
+				required
+			/>
 			<label for="password-confirm">Confirmer le mot de passe</label>
 			{#if passwordConfirmError}
 				<span class="error-message">{passwordConfirmError}</span>

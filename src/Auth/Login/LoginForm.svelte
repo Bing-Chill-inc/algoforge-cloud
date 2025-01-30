@@ -1,8 +1,9 @@
 <script lang="ts">
-	export let onSuccess: () => void;
+	import { setUser } from "../../stores/userStores";
 
 	let email: string = "";
 	let password: string = "";
+	let rememberMe: boolean = false;
 
 	let messageError: string = "";
 	let hasError = false;
@@ -25,7 +26,7 @@
 		}
 
 		if (hasError) {
-			messageError = "Email ou mot de passe invalide.";
+			messageError = "Email et/ou mot de passe invalide.";
 		} else {
 			try {
 				const response = await fetch("/api/users/login", {
@@ -40,8 +41,8 @@
 				}
 
 				const data = await response.json();
-				console.log("Connexion réussie :", data);
-				onSuccess && onSuccess();
+				setUser(data.user, rememberMe);
+				window.location.hash = "#/";
 			} catch (error) {
 				if (error instanceof Error) {
 					console.log(error);
@@ -73,6 +74,10 @@
 			{#if messageError}
 				<span class="error-message">{messageError}</span>
 			{/if}
+		</div>
+		<div class="checkbox-container">
+			<input type="checkbox" id="rememberMe" bind:checked={rememberMe} />
+			<label for="rememberMe">Rester connecté</label>
 		</div>
 		<button type="submit">Se connecter</button>
 	</form>
@@ -116,6 +121,18 @@
 		left: 0;
 		color: var(--titleColor);
 		font-size: 12px;
+	}
+
+	.checkbox-container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.checkbox-container label {
+		font-size: 16px;
+		color: var(--fgColor);
 	}
 
 	.error-message {
