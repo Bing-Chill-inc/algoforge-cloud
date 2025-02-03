@@ -1,11 +1,17 @@
 <script lang="ts">
 	import CloudContent from "./CloudContent/CloudContent.svelte";
 	import SideBar from "./SideBar/SideBar.svelte";
-	import Login from "./Auth/Login/Login.svelte";
-	import Register from "./Auth/Register/Register.svelte";
-	import ForgotPassword from "./Auth/ForgotPassword/ForgotPassword.svelte";
+	import Login from "./routes/Login.svelte";
+	import Register from "./routes/Register.svelte";
+	import ForgotPassword from "./routes/ForgotPassword.svelte";
 	import { theme } from "./stores/themeStore";
 	import { onMount } from "svelte";
+	import { loadUser } from "./stores/userStores";
+	import Test from "./routes/test.svelte";
+
+	onMount(() => {
+		loadUser();
+	});
 
 	// Définir les routes
 	const routes: { [key: string]: typeof Login } = {
@@ -13,6 +19,7 @@
 		"#/register": Register,
 		"#/forgot-password": ForgotPassword,
 		"#/": CloudContent,
+		"#/test": Test,
 	};
 
 	// Déterminer le composant actuel en fonction du hachage

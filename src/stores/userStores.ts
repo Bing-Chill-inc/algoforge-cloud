@@ -59,7 +59,9 @@ export function getSessionData() {
 	const userIdCookie = cookies.find((row) => row.startsWith("userId="));
 
 	const token = tokenCookie ? tokenCookie.split("=")[1] : null;
-	const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
+	const userId = userIdCookie
+		? parseInt(userIdCookie.split("=")[1], 10)
+		: null;
 
 	if (token && userId) {
 		return { token, userId };
@@ -88,10 +90,6 @@ export async function loadUser() {
 			}
 			userStore.set(user);
 		} catch (error) {
-			console.error(
-				"Erreur lors du chargement de l'utilisateur :",
-				error,
-			);
 			logout();
 		}
 	}
