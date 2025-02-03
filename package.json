@@ -19,6 +19,7 @@
     "vite": "^5.4.10"
   },
   "dependencies": {
+    "@types/bun": "^1.2.2",
     "rollup": "^4.31.0"
   }
 }
