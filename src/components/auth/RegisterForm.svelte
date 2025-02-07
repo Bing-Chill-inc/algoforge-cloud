@@ -1,0 +1,128 @@
+<script lang="ts">
+	import InputField from "../common/InputField.svelte";
+	import Button from "../common/Button.svelte";
+
+	let email: string = "";
+	let password: string = "";
+	let pseudo: string = "";
+	let passwordConfirm: string = "";
+
+	let emailError = "";
+	let passwordError = "";
+	let pseudoError = "";
+	let passwordConfirmError = "";
+
+	// Fonction pour gérer la soumission du formulaire d'inscription
+	async function handleRegister(event: Event) {
+		event.preventDefault();
+
+		emailError = "";
+		passwordError = "";
+		pseudoError = "";
+		passwordConfirmError = "";
+
+		if (!pseudo) {
+			pseudoError = "Veuillez entrer un pseudo";
+		}
+		if (!email) {
+			emailError = "Veuillez entrer votre email";
+		} else if (!/\S+@\S+\.\S+/.test(email)) {
+			emailError = "Adresse email mal formée";
+		}
+		if (!password) {
+			passwordError = "Requis";
+		}
+		if (
+			password.length < 8 ||
+			!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*\W)|(?=.*[a-z])(?=.*\d)(?=.*\W)|(?=.*[A-Z])(?=.*\d)(?=.*\W)/.test(
+				password,
+			)
+		) {
+			passwordError =
+				"Doit comporter au moins 8 caractères et contenir trois des quatre types de caractères suivants : majuscules, minuscules, chiffres et symboles";
+		}
+		if (!passwordConfirm) {
+			passwordConfirmError = "Requis";
+		}
+		if (password !== passwordConfirm) {
+			passwordConfirmError = "Les mots de passe ne correspondent pas";
+		}
+
+		if (
+			!pseudoError &&
+			!emailError &&
+			!passwordError &&
+			!passwordConfirmError
+		) {
+			try {
+				const response = await fetch("/api/users/register", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ pseudo, email, password }),
+				});
+
+				if (!response.ok) {
+					const errorData = await response.json();
+					throw new Error(
+						errorData.message || "Erreur à l'inscription",
+					);
+				}
+
+				const data = await response.json();
+				console.log("Inscription réussie :", data);
+				window.location.hash = "#/login";
+			} catch (error) {
+				if (error instanceof Error) {
+					alert(error.message);
+				} else {
+					alert("Une erreur inconnue est survenue");
+				}
+			}
+		}
+	}
+</script>
+
+<main class="register-form">
+	<form on:submit={handleRegister} novalidate>
+		<InputField
+			type="text"
+			id="pseudo"
+			label="Pseudo"
+			bind:value={pseudo}
+			errorMessage={pseudoError}
+			required
+		/>
+		<InputField
+			type="email"
+			id="email"
+			label="Email"
+			bind:value={email}
+			errorMessage={emailError}
+			required
+		/>
+		<InputField
+			type="password"
+			id="password"
+			label="Mot de passe"
+			bind:value={password}
+			errorMessage={passwordError}
+			required
+		/>
+		<InputField
+			type="password"
+			id="password-confirm"
+			label="Confirmer le mot de passe"
+			bind:value={passwordConfirm}
+			errorMessage={passwordConfirmError}
+			required
+		/>
+		<Button type="submit">S'inscrire</Button>
+	</form>
+</main>
+
+<style>
+	form {
+		width: 100%;
+		max-width: 400px;
+	}
+</style>

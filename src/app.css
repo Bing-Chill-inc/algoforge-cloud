@@ -3,7 +3,6 @@
 	line-height: 1.5;
 	font-weight: 400;
 
-	--background-color: #191e28;
 	--front-color: #ffffff;
 	--alt-background-color: #0f1318;
 	--off-background-color: #2d333f;
@@ -11,7 +10,7 @@
 
 	color-scheme: light dark;
 	color: var(--front-color);
-	background-color: var(--background-color);
+	background-color: var(--bgColor);
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
