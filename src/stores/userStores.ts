@@ -54,7 +54,7 @@ export function getSessionData() {
 	}
 
 	// Vérifier les cookies
-	const cookies = document.cookie.split("; ");
+	const cookies = document.cookie ? document.cookie.split("; ") : [];
 	const tokenCookie = cookies.find((row) => row.startsWith("authToken="));
 	const userIdCookie = cookies.find((row) => row.startsWith("userId="));
 

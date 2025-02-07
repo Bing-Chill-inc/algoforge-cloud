@@ -82,7 +82,7 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 
 	.floating-image-1 {
 		position: absolute;
-		z-index: -1;
+		z-index: 1;
 		top: -90px;
 		left: -80px;
 		width: 200px;
@@ -94,7 +94,7 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 
 	.floating-image-2 {
 		position: absolute;
-		z-index: 2;
+		z-index: 3;
 		bottom: -50px;
 		right: -60px;
 		width: 80px;
@@ -132,10 +132,11 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 	}
 
 	.auth-box {
+		z-index: 2;
 		position: relative;
 		margin: 0 auto;
 		padding: 40px;
-		background: #e5eaf070;
+		background: var(--bgColorTertiary);
 		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 		backdrop-filter: blur(4px);
 		-webkit-backdrop-filter: blur(4px);

@@ -1,7 +1,10 @@
 <script lang="ts">
+	import FileList from "./components/FileList.svelte";
 </script>
 
-<main class="cloud-content"></main>
+<main class="cloud-content">
+	<FileList />
+</main>
 
 <style>
 	.cloud-content {

@@ -12,10 +12,10 @@
 
 	// Rediriger en fonction de l'état de connexion
 	onMount(() => {
-		if (!isUserLoggedIn()) {
-			// Rediriger vers la page de login si l'utilisateur n'est pas connecté
-			window.location.hash = "#/login";
-		}
+		// if (!isUserLoggedIn()) {
+		// 	// Rediriger vers la page de login si l'utilisateur n'est pas connecté
+		// 	window.location.hash = "#/login";
+		// }
 	});
 </script>
 

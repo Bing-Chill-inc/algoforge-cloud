@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { listTheme } from "../utils/themes";
-	import { theme } from "../stores/themeStore";
+	import { listTheme } from "../../utils/themes";
+	import { theme } from "../../stores/themeStore";
 </script>
 
 <main class="select-theme">

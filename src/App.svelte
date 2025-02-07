@@ -1,7 +1,6 @@
 <script lang="ts">
-	import CloudContent from "./CloudContent/CloudContent.svelte";
-	import SideBar from "./SideBar/SideBar.svelte";
 	import Login from "./routes/Login.svelte";
+	import Cloud from "./routes/Cloud.svelte";
 	import Register from "./routes/Register.svelte";
 	import ForgotPassword from "./routes/ForgotPassword.svelte";
 	import { theme } from "./stores/themeStore";
@@ -10,6 +9,7 @@
 	import Test from "./routes/test.svelte";
 
 	onMount(() => {
+		// Charger l'utilisateur actuel
 		loadUser();
 	});
 
@@ -18,7 +18,7 @@
 		"#/login": Login,
 		"#/register": Register,
 		"#/forgot-password": ForgotPassword,
-		"#/": CloudContent,
+		"#/home": Cloud,
 		"#/test": Test,
 	};
 
@@ -55,6 +55,7 @@
 
 <style>
 	main {
+		background-color: var(--bgColor);
 		width: 100%;
 		height: 100%;
 		margin: 0 auto;

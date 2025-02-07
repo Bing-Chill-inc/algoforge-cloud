@@ -45,6 +45,10 @@
 	}
 
 	.menu-icon {
+		border: none;
+		background: none;
+		padding: 0;
+		margin: 0;
 		width: 40px;
 		height: 40px;
 		cursor: pointer;
@@ -72,5 +76,9 @@
 		padding: 0.5vw;
 		color: var(--fgColor);
 		cursor: pointer;
+	}
+
+	#boutonCompte {
+		fill: var(--fgColor);
 	}
 </style>
