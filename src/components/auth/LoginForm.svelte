@@ -76,7 +76,7 @@
 		/>
 		<InputField
 			type="password"
-			id="password"
+			id="password_show"
 			label="Mot de passe"
 			bind:value={password}
 			errorMessage={messageError}
