@@ -6,6 +6,7 @@
 	import Link from "../common/Link.svelte";
 	import { onMount } from "svelte";
 	import { get } from "svelte/store";
+	import { notifications } from "../../stores/notificationStore";
 
 	// Rediriger un utilisateur connecté
 	onMount(() => {
@@ -52,9 +53,9 @@
 				window.location.hash = "#/";
 			} catch (error) {
 				if (error instanceof Error) {
-					hasError = true;
+					notifications.add("error", error.message);
 				} else {
-					alert("Une erreur inconnue est survenue");
+					notifications.add("error", "Erreur de connexion");
 				}
 			}
 		}
