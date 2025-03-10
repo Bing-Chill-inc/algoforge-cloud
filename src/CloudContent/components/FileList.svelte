@@ -39,9 +39,8 @@
 			} finally {
 				loading = false;
 			}
-		}
-		else {
-			logout();
+		} else {
+			// logout();
 		}
 	}
 	onMount(() => {

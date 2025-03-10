@@ -13,7 +13,7 @@
 		const user = get(userStore);
 		if (user) {
 			// Rediriger vers la page par défaut (par exemple, le tableau de bord)
-			window.location.hash = "#/test";
+			window.location.hash = "#/";
 		}
 	});
 
@@ -50,6 +50,7 @@
 				const responseData = await response.json();
 				const user: User = responseData.data;
 				setUser(user, rememberMe);
+				notifications.add("success", "Connexion réussie");
 				window.location.hash = "#/";
 			} catch (error) {
 				if (error instanceof Error) {

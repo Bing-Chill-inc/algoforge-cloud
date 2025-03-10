@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Theme from "./Theme.svelte";
+	import { logout } from "../../stores/userStores";
+	import { notifications } from "../../stores/notificationStore";
 
 	let isMenuOpen = false;
 
 	const toggleMenu = () => {
 		isMenuOpen = !isMenuOpen;
 	};
+
+	function handleLogout() {
+		logout();
+		notifications.add("success", "Déconnexion réussie");
+		window.location.hash = "#/login";
+	}
 
 	onMount(() => {
 		const closeMenu = (event: MouseEvent) => {
@@ -30,7 +38,11 @@
 
 	{#if isMenuOpen}
 		<div class="menu">
-			<button class="menu-item" aria-label="Logout">Déconnexion</button>
+			<button
+				class="menu-item"
+				on:click={handleLogout}
+				aria-label="Logout">Déconnexion</button
+			>
 			<div class="menu-item">
 				<Theme />
 			</div>

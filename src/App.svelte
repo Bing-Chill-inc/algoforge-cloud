@@ -19,7 +19,7 @@
 		"#/login": Login,
 		"#/register": Register,
 		"#/forgot-password": ForgotPassword,
-		"#/home": Cloud,
+		"#/": Cloud,
 		"#/test": Test,
 	};
 
