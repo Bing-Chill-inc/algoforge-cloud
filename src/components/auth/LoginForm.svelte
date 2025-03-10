@@ -6,13 +6,14 @@
 	import Link from "../common/Link.svelte";
 	import { onMount } from "svelte";
 	import { get } from "svelte/store";
+	import { notifications } from "../../stores/notificationStore";
 
 	// Rediriger un utilisateur connecté
 	onMount(() => {
 		const user = get(userStore);
 		if (user) {
 			// Rediriger vers la page par défaut (par exemple, le tableau de bord)
-			window.location.hash = "#/test";
+			window.location.hash = "#/";
 		}
 	});
 
@@ -49,12 +50,13 @@
 				const responseData = await response.json();
 				const user: User = responseData.data;
 				setUser(user, rememberMe);
+				notifications.add("success", "Connexion réussie");
 				window.location.hash = "#/";
 			} catch (error) {
 				if (error instanceof Error) {
-					hasError = true;
+					notifications.add("error", error.message);
 				} else {
-					alert("Une erreur inconnue est survenue");
+					notifications.add("error", "Erreur de connexion");
 				}
 			}
 		}
@@ -76,7 +78,7 @@
 		/>
 		<InputField
 			type="password"
-			id="password"
+			id="password_show"
 			label="Mot de passe"
 			bind:value={password}
 			errorMessage={messageError}

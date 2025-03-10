@@ -1,16 +1,17 @@
 <script lang="ts">
 	import InputField from "../common/InputField.svelte";
 	import Button from "../common/Button.svelte";
+	import { notifications } from "../../stores/notificationStore";
 
 	let email: string = "";
 	let password: string = "";
 	let pseudo: string = "";
 	let passwordConfirm: string = "";
 
-	let emailError = "";
-	let passwordError = "";
-	let pseudoError = "";
-	let passwordConfirmError = "";
+	let emailError: string = "";
+	let passwordError: string = "";
+	let pseudoError: string = "";
+	let passwordConfirmError: string = "";
 
 	// Fonction pour gérer la soumission du formulaire d'inscription
 	async function handleRegister(event: Event) {
@@ -69,13 +70,13 @@
 				}
 
 				const data = await response.json();
-				console.log("Inscription réussie :", data);
+				notifications.add("success", "Inscription réussie");
 				window.location.hash = "#/login";
 			} catch (error) {
 				if (error instanceof Error) {
-					alert(error.message);
+					notifications.add("error", error.message);
 				} else {
-					alert("Une erreur inconnue est survenue");
+					notifications.add("error", "Erreur à l'inscription");
 				}
 			}
 		}

@@ -7,6 +7,7 @@
 	import { onMount } from "svelte";
 	import { loadUser } from "./stores/userStores";
 	import Test from "./routes/test.svelte";
+	import NotificationManager from "./components/NotificationManager.svelte";
 
 	onMount(() => {
 		// Charger l'utilisateur actuel
@@ -18,7 +19,7 @@
 		"#/login": Login,
 		"#/register": Register,
 		"#/forgot-password": ForgotPassword,
-		"#/home": Cloud,
+		"#/": Cloud,
 		"#/test": Test,
 	};
 
@@ -51,6 +52,7 @@
 
 <main>
 	<svelte:component this={CurrentComponent} />
+	<NotificationManager />
 </main>
 
 <style>
