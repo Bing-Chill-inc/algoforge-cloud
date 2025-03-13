@@ -1,5 +1,5 @@
 <script lang="ts">
-	import userStore, { setUser, type User } from "../../stores/userStores";
+	import userStore, { setUser } from "../../stores/userStores";
 	import InputField from "../common/InputField.svelte";
 	import Checkbox from "../common/Checkbox.svelte";
 	import Button from "../common/Button.svelte";
@@ -7,6 +7,7 @@
 	import { onMount } from "svelte";
 	import { get } from "svelte/store";
 	import { notifications } from "../../stores/notificationStore";
+	import type { User } from "../../utils/types";
 
 	// Rediriger un utilisateur connecté
 	onMount(() => {
@@ -48,8 +49,10 @@
 				}
 
 				const responseData = await response.json();
+				console.log(responseData);
 				const user: User = responseData.data;
 				setUser(user, rememberMe);
+				console.log("user", user);
 				notifications.add("success", "Connexion réussie");
 				window.location.hash = "#/";
 			} catch (error) {

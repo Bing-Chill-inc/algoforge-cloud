@@ -5,14 +5,11 @@
 	import ForgotPassword from "./routes/ForgotPassword.svelte";
 	import { theme } from "./stores/themeStore";
 	import { onMount } from "svelte";
-	import { loadUser } from "./stores/userStores";
+	import { loadUser, isUserLoggedIn } from "./stores/userStores";
 	import Test from "./routes/test.svelte";
 	import NotificationManager from "./components/NotificationManager.svelte";
 
-	onMount(() => {
-		// Charger l'utilisateur actuel
-		loadUser();
-	});
+	let isLoading = true;
 
 	// Définir les routes
 	const routes: { [key: string]: typeof Login } = {
@@ -28,12 +25,23 @@
 		(window.location.hash as keyof typeof routes) || "#/login";
 	let CurrentComponent = routes[currentHash] || Login;
 
-	// Écouter les changements de hachage
+	// Écouter les changements de hachage et charger l'utilisateur
+	// Split the initialization into two onMount calls
+	onMount(() => {
+		// First onMount to load user
+		loadUser().then(() => {
+			isLoading = false;
+		});
+	});
+
+	// Second onMount to handle routing
 	onMount(() => {
 		const handleHashChange = () => {
 			currentHash = window.location.hash;
 			if (!routes[currentHash]) {
-				window.location.hash = "#/login"; // Rediriger vers la page de connexion par défaut
+				window.location.hash = "#/login";
+			} else if (currentHash === "#/login" && isUserLoggedIn()) {
+				window.location.hash = "#/";
 			} else {
 				CurrentComponent = routes[currentHash];
 			}
@@ -51,7 +59,11 @@
 </script>
 
 <main>
-	<svelte:component this={CurrentComponent} />
+	{#if isLoading}
+		<div class="loading">Chargement...</div>
+	{:else}
+		<svelte:component this={CurrentComponent} />
+	{/if}
 	<NotificationManager />
 </main>
 
@@ -61,5 +73,13 @@
 		width: 100%;
 		height: 100%;
 		margin: 0 auto;
+	}
+
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		color: var(--textColor);
 	}
 </style>

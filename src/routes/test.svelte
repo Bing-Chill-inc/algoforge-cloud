@@ -1,7 +1,8 @@
 <script lang="ts">
-	import userStore, { type User } from "../stores/userStores";
+	import userStore from "../stores/userStores";
 	import ProtectedRoute from "./ProtectedRoute.svelte";
 	import { onMount } from "svelte";
+	import type { User } from "../utils/types";
 
 	let currentUser: User | null = null;
 
