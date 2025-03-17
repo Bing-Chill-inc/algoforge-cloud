@@ -1,21 +1,23 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Theme from "./Theme.svelte";
-	import {
-		logout,
-		default as userStore,
-		getUser,
-	} from "../../stores/userStores";
+	import ProfileForm from "./ProfileForm.svelte"; // Ajout de l'import
+	import { logout, getUser } from "../../stores/userStores";
 	import { notifications } from "../../stores/notificationStore";
 	import { get } from "svelte/store";
 	import type { User } from "../../utils/types";
 
 	let isMenuOpen = false;
+	let isProfileModalOpen = false;
 
 	const user: User | null = getUser();
 
 	const toggleMenu = () => {
 		isMenuOpen = !isMenuOpen;
+	};
+
+	const toggleProfileModal = () => {
+		isProfileModalOpen = !isProfileModalOpen;
 	};
 
 	function handleLogout() {
@@ -35,18 +37,23 @@
 	});
 </script>
 
+<ProfileForm isOpen={isProfileModalOpen} onClose={toggleProfileModal} />
 <main class="menu-container">
 	<button class="menu-icon" on:click={toggleMenu} aria-label="Toggle menu">
 		<div class="avatar-circle">
-			<svg
-				id="boutonCompte"
-				class={isMenuOpen ? "menu-open" : ""}
-				viewBox="0 0 24 24"
-			>
-				<path
-					d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
-				/>
-			</svg>
+			{#if user?.urlPfp}
+				<img src={user.urlPfp} alt="Avatar" />
+			{:else}
+				<svg
+					id="boutonCompte"
+					class={isMenuOpen ? "menu-open" : ""}
+					viewBox="0 0 24 24"
+				>
+					<path
+						d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+					/>
+				</svg>
+			{/if}
 		</div>
 	</button>
 
@@ -54,11 +61,15 @@
 		<div class="menu">
 			<div class="menu-header">
 				<div class="user-avatar">
-					<svg viewBox="0 0 24 24">
-						<path
-							d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
-						/>
-					</svg>
+					{#if user?.urlPfp}
+						<img src={user.urlPfp} alt="Avatar" />
+					{:else}
+						<svg viewBox="0 0 24 24">
+							<path
+								d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+							/>
+						</svg>
+					{/if}
 				</div>
 				<div class="user-info">
 					<p class="greeting">
@@ -86,7 +97,10 @@
 			<div class="menu-items">
 				<button
 					class="menu-item account-action"
-					on:click={() => (window.location.hash = "#/profile")}
+					on:click={() => {
+						toggleProfileModal();
+						toggleMenu();
+					}}
 				>
 					<svg viewBox="0 0 24 24">
 						<path
