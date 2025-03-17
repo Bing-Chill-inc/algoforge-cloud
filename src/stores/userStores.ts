@@ -1,22 +1,11 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import {
 	theme,
 	getPositionTheme,
 	getThemeNameFromPosition,
 } from "./themeStore";
 import { getCookie } from "../utils/utils";
-
-// Définition du type User
-export type User = {
-	id: number;
-	adresseMail: string;
-	pseudo: string;
-	dateInscription: string;
-	theme: number;
-	urlPfp: string | null;
-	isVerified: boolean;
-	tokens?: { token: string }[];
-};
+import type { User } from "../utils/types";
 
 // Création du store utilisateur
 const userStore = writable<User | null>(null);
@@ -29,12 +18,18 @@ export function setUser(user: User, rememberMe: boolean) {
 	// Extraire le token et l'ID
 	const token = user.tokens?.[0]?.token;
 	const userId = user.id.toString();
+	const tokenExpiration = user.tokens?.[0]?.dateExpiration;
 
 	if (token) {
+		// Calculer la durée de validité du token en secondes
+		const expirationTime = tokenExpiration
+			? Math.floor((tokenExpiration - Date.now()) / 1000)
+			: 604800; // 7 jours par défaut
+
 		if (rememberMe) {
-			// Stockage sécurisé en cookie (expire après 7 jours)
-			document.cookie = `authToken=${token}; path=/; max-age=604800; Secure; SameSite=Strict`;
-			document.cookie = `userId=${userId}; path=/; max-age=604800; Secure; SameSite=Strict`;
+			// Stockage sécurisé en cookie (expire selon la date d'expiration du token)
+			document.cookie = `authToken=${token}; path=/; max-age=${expirationTime}; Secure; SameSite=Strict`;
+			document.cookie = `userId=${userId}; path=/; max-age=${expirationTime}; Secure; SameSite=Strict`;
 		} else {
 			// Stocker dans sessionStorage
 			sessionStorage.setItem("authToken", token);
@@ -78,18 +73,39 @@ export async function loadUser() {
 		try {
 			const response = await fetch(`/api/users/${sessionData.userId}`, {
 				method: "GET",
-				headers: { Authorization: `Bearer ${sessionData.token}` },
+				headers: {
+					Authorization: `Bearer ${sessionData.token}`,
+				},
 			});
-			if (!response.ok) throw new Error("Utilisateur non trouvé");
-			const user: User = await response.json();
 
-			// Synchroniser le thème
-			const cookiePositionTheme = getPositionTheme(getCookie("theme"));
-			if (user.theme && user.theme !== cookiePositionTheme) {
-				theme.set(getThemeNameFromPosition(user.theme));
+			if (!response.ok) throw new Error("Utilisateur non trouvé");
+			const responseData = await response.json();
+
+			// Extraire les données de l'utilisateur
+			const user: User = responseData.data || responseData;
+
+			// Vérifier si le token a expiré
+			const tokenExpiration = user.tokens?.[0]?.dateExpiration;
+			if (tokenExpiration && tokenExpiration < Date.now()) {
+				logout();
+				return;
 			}
+
+			// // Synchroniser le thème
+			// if (user.theme !== undefined && user.theme !== null) {
+			// 	const currentThemePosition = getPositionTheme(
+			// 		getCookie("theme"),
+			// 	);
+
+			// 	if (currentThemePosition !== user.theme) {
+			// 		theme.set(getThemeNameFromPosition(user.theme));
+			// 	}
+			// }
+
+			// Stocker l'utilisateur dans le store
 			userStore.set(user);
 		} catch (error) {
+			console.error("Erreur lors du chargement de l'utilisateur:", error);
 			logout();
 		}
 	}
@@ -103,6 +119,15 @@ export function logout() {
 	sessionStorage.removeItem("authToken"); // Supprimer sessionStorage
 	sessionStorage.removeItem("userId");
 	document.location.hash = "#/login"; // Rediriger vers la page de connexion
+}
+// Fonction pour vérifier si l'utilisateur est connecté
+export function isUserLoggedIn() {
+	return get(userStore) !== null;
+}
+
+// Fonctions pour récupérer les informations de l'utilisateur
+export function getUser() {
+	return get(userStore);
 }
 
 export default userStore;
