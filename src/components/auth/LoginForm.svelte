@@ -57,7 +57,7 @@
 				window.location.hash = "#/";
 			} catch (error) {
 				if (error instanceof Error) {
-					notifications.add("error", error.message);
+					hasError = true;
 				} else {
 					notifications.add("error", "Erreur de connexion");
 				}

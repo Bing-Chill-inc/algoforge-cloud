@@ -79,7 +79,10 @@ export async function loadUser() {
 			});
 
 			if (!response.ok) throw new Error("Utilisateur non trouvé");
-			const user: User = await response.json();
+			const responseData = await response.json();
+
+			// Extraire les données de l'utilisateur
+			const user: User = responseData.data || responseData;
 
 			// Vérifier si le token a expiré
 			const tokenExpiration = user.tokens?.[0]?.dateExpiration;
@@ -88,11 +91,18 @@ export async function loadUser() {
 				return;
 			}
 
-			// Synchroniser le thème
-			const cookiePositionTheme = getPositionTheme(getCookie("theme"));
-			if (user.theme && user.theme !== cookiePositionTheme) {
-				theme.set(getThemeNameFromPosition(user.theme));
-			}
+			// // Synchroniser le thème
+			// if (user.theme !== undefined && user.theme !== null) {
+			// 	const currentThemePosition = getPositionTheme(
+			// 		getCookie("theme"),
+			// 	);
+
+			// 	if (currentThemePosition !== user.theme) {
+			// 		theme.set(getThemeNameFromPosition(user.theme));
+			// 	}
+			// }
+
+			// Stocker l'utilisateur dans le store
 			userStore.set(user);
 		} catch (error) {
 			console.error("Erreur lors du chargement de l'utilisateur:", error);
@@ -113,6 +123,11 @@ export function logout() {
 // Fonction pour vérifier si l'utilisateur est connecté
 export function isUserLoggedIn() {
 	return get(userStore) !== null;
+}
+
+// Fonctions pour récupérer les informations de l'utilisateur
+export function getUser() {
+	return get(userStore);
 }
 
 export default userStore;

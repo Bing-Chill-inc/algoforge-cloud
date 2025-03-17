@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Theme from "./Theme.svelte";
-	import { logout, default as userStore } from "../../stores/userStores";
+	import {
+		logout,
+		default as userStore,
+		getUser,
+	} from "../../stores/userStores";
 	import { notifications } from "../../stores/notificationStore";
-	import User from "../../stores/userStores";
+	import { get } from "svelte/store";
+	import type { User } from "../../utils/types";
 
 	let isMenuOpen = false;
+
+	const user: User | null = getUser();
 
 	const toggleMenu = () => {
 		isMenuOpen = !isMenuOpen;
@@ -55,9 +62,9 @@
 				</div>
 				<div class="user-info">
 					<p class="greeting">
-						Bonjour {$userStore?.pseudo || "utilisateur"} !
+						{user?.pseudo || "utilisateur"}
 					</p>
-					<p class="email">{$userStore?.adresseMail}</p>
+					<p class="email">{user?.adresseMail}</p>
 				</div>
 				<button
 					class="close-button"
@@ -73,9 +80,7 @@
 			</div>
 
 			<div class="menu-action">
-				<a href="#/profile" class="manage-account-button">
-					Gérer votre compte AlgoForge
-				</a>
+				<Theme />
 			</div>
 
 			<div class="menu-items">
@@ -99,12 +104,6 @@
 					</svg>
 					<span>Se déconnecter</span>
 				</button>
-			</div>
-
-			<div class="menu-footer">
-				<div class="theme-selector">
-					<Theme />
-				</div>
 			</div>
 		</div>
 	{/if}
@@ -183,6 +182,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: start;
 	}
 
 	.greeting {
@@ -228,23 +228,6 @@
 		border-bottom: 1px solid var(--borderColor2);
 	}
 
-	.manage-account-button {
-		display: block;
-		text-align: center;
-		padding: 10px;
-		border-radius: 30px;
-		background-color: transparent;
-		border: 1px solid var(--borderColor);
-		color: var(--fgColor);
-		text-decoration: none;
-		font-weight: 500;
-		transition: background-color 0.2s;
-	}
-
-	.manage-account-button:hover {
-		background-color: var(--fgColorTransparent);
-	}
-
 	.menu-items {
 		padding: 10px 0;
 		border-bottom: 1px solid var(--borderColor2);
@@ -271,15 +254,6 @@
 		height: 24px;
 		margin-right: 15px;
 		fill: var(--fgColor);
-	}
-
-	.menu-footer {
-		padding: 15px 20px;
-	}
-
-	.theme-selector {
-		display: flex;
-		justify-content: center;
 	}
 
 	#boutonCompte {
