@@ -10,9 +10,13 @@
 
 <style>
 	.side-bar {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 50px;
 		width: 20dvw;
 		max-width: 260px;
 		min-width: 200px;
-		height: calc(100dvh - 120px);
+		margin: 30px 0;
 	}
 </style>
