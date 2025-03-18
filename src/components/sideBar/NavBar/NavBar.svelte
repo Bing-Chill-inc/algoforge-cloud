@@ -80,7 +80,8 @@
 		color: var(--fgColor);
 		fill: var(--fgColor);
 		border: none;
-		background-color: var(--bgColor);
+		background-color: transparent;
+		user-select: none;
 		transition:
 			box-shadow 0.5s ease,
 			color 0.3s ease-in-out,
