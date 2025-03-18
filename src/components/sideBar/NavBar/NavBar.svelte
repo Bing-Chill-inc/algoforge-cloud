@@ -1,8 +1,6 @@
 <script lang="ts">
 	import DynamicAsset from "./assets/DynamicAsset.svelte";
-	import { writable, type Writable } from "svelte/store";
-
-	let activeItem: Writable<string> = writable("Home");
+	import { activeItem } from "../../../stores/activeItemStore";
 
 	function setActiveItem(item: string) {
 		activeItem.set(item);

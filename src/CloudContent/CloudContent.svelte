@@ -1,9 +1,16 @@
 <script lang="ts">
+	import { activeItem } from "../stores/activeItemStore";
 	import FileList from "./components/FileList.svelte";
 </script>
 
 <main class="cloud-content">
-	<FileList />
+	{#if $activeItem === "Home"}
+		<FileList />
+	{:else if $activeItem === "Clock"}
+		<h1>RecentFiles</h1>
+	{:else if $activeItem === "Shared"}
+		<h1>SharedFiles</h1>
+	{/if}
 </main>
 
 <style>
