@@ -10,11 +10,9 @@
 
 <style>
 	.side-bar {
-		width: calc(100% - 80% - 35px);
-		height: calc(100vh - 120px);
-		position: absolute;
-		bottom: 15px;
-		left: 15px;
-		/* background-color: rgba(255, 0, 0, 0.07); */
+		width: 20dvw;
+		max-width: 260px;
+		min-width: 200px;
+		height: calc(100dvh - 120px);
 	}
 </style>

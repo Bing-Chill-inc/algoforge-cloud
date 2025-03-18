@@ -8,6 +8,16 @@
 <ProtectedRoute />
 <main class="cloud">
 	<MenuCompte />
-	<CloudContent />
-	<SideBar />
+	<div class="cloud-wrapper">
+		<SideBar />
+		<CloudContent />
+	</div>
 </main>
+
+<style>
+	.cloud-wrapper {
+		width: 100%;
+		height: 100%;
+		display: flex;
+	}
+</style>

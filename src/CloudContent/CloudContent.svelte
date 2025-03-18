@@ -8,12 +8,10 @@
 
 <style>
 	.cloud-content {
-		width: 80%;
-		height: calc(100vh - 120px);
-		position: absolute;
-		bottom: 15px;
-		right: 15px;
-		background-color: var(--bgColor);
+		flex: 1;
+		width: calc(100% - 300px);
+		height: calc(100vh - 80px);
+		background-color: var(--bgColorTertiary);
 		border-radius: 20px;
 		box-shadow: 0 0 10px -5px var(--primary-color);
 	}
