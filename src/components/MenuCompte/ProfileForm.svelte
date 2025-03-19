@@ -30,6 +30,9 @@
 	// Variable pour indiquer si une requête est en cours
 	let isLoading = false;
 
+	// Variable pour gérer les onglets
+	let activeTab = "photo"; // "photo", "pseudo", "password"
+
 	function closeModal() {
 		onClose();
 	}
@@ -38,6 +41,10 @@
 		if (event.key === "Escape") {
 			closeModal();
 		}
+	}
+
+	function setActiveTab(tab: string) {
+		activeTab = tab;
 	}
 
 	async function handleSave() {
@@ -50,20 +57,13 @@
 
 		let hasError = false;
 
-		// Validation du pseudo
-		if (!pseudo) {
+		// Validation selon l'onglet actif
+		if (activeTab === "photo") {
+			// Pas de validation spécifique pour l'URL de l'image
+		} else if (activeTab === "pseudo" && !pseudo) {
 			pseudoError = "Le pseudo est requis";
 			hasError = true;
-		}
-
-		// Validation du mot de passe si l'utilisateur souhaite le changer
-		if (newPassword || confirmPassword || currentPassword) {
-			if (!currentPassword) {
-				currentPasswordError =
-					"Mot de passe actuel requis pour effectuer des changements";
-				hasError = true;
-			}
-
+		} else if (activeTab === "password") {
 			if (newPassword) {
 				if (
 					newPassword.length < 8 ||
@@ -81,22 +81,33 @@
 						"Les mots de passe ne correspondent pas";
 					hasError = true;
 				}
+			} else {
+				newPasswordError = "Le nouveau mot de passe est requis";
+				hasError = true;
 			}
+		}
+
+		// Validation du mot de passe actuel (requis pour toutes les modifications)
+		if (!currentPassword) {
+			currentPasswordError =
+				"Mot de passe actuel requis pour effectuer des changements";
+			hasError = true;
 		}
 
 		if (!hasError) {
 			try {
 				isLoading = true;
 
-				// Préparation des données à envoyer
+				// Préparation des données à envoyer selon l'onglet actif
 				const updateData: any = {
-					pseudo,
-					urlPfp: imageUrl,
+					currentPassword,
 				};
 
-				// Ajout du mot de passe seulement si nécessaire
-				if (newPassword && currentPassword) {
-					updateData.currentPassword = currentPassword;
+				if (activeTab === "photo") {
+					updateData.urlPfp = imageUrl;
+				} else if (activeTab === "pseudo") {
+					updateData.pseudo = pseudo;
+				} else if (activeTab === "password") {
 					updateData.newPassword = newPassword;
 				}
 
@@ -187,54 +198,77 @@
 				</button>
 			</div>
 
+			<div class="tabs-container">
+				<button
+					class="tab-button"
+					class:active={activeTab === "photo"}
+					on:click={() => setActiveTab("photo")}
+					disabled={isLoading}
+				>
+					Photo de profil
+				</button>
+				<button
+					class="tab-button"
+					class:active={activeTab === "pseudo"}
+					on:click={() => setActiveTab("pseudo")}
+					disabled={isLoading}
+				>
+					Pseudo
+				</button>
+				<button
+					class="tab-button"
+					class:active={activeTab === "password"}
+					on:click={() => setActiveTab("password")}
+					disabled={isLoading}
+				>
+					Mot de passe
+				</button>
+			</div>
+
 			<div class="modal-content">
 				<main class="profile-form">
-					<div class="profile-picture-container">
-						<div class="profile-picture" class:has-image={imageUrl}>
-							{#if imageUrl}
-								<img src={imageUrl} alt="Profile preview" />
-							{:else}
-								<svg viewBox="0 0 24 24">
-									<path
-										d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
-									/>
-								</svg>
-							{/if}
-						</div>
-						<InputField
-							type="text"
-							id="image_url"
-							label="URL de l'image"
-							bind:value={imageUrl}
-							errorMessage={imageUrlError}
-							disabled={isLoading}
-						/>
-					</div>
-
-					<div class="form-fields">
-						<InputField
-							type="text"
-							id="pseudo"
-							label="Pseudo"
-							bind:value={pseudo}
-							errorMessage={pseudoError}
-							required
-							disabled={isLoading}
-						/>
-
-						<div class="password-section">
-							<h3>Changer le mot de passe</h3>
+					{#if activeTab === "photo"}
+						<div class="profile-picture-container">
+							<div
+								class="profile-picture"
+								class:has-image={imageUrl}
+							>
+								{#if imageUrl}
+									<img src={imageUrl} alt="Profile preview" />
+								{:else}
+									<svg viewBox="0 0 24 24">
+										<path
+											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+										/>
+									</svg>
+								{/if}
+							</div>
 							<InputField
-								type="password"
-								id="password_current"
-								label="Mot de passe actuel"
-								bind:value={currentPassword}
-								errorMessage={currentPasswordError}
+								type="text"
+								id="image_url"
+								label="URL de l'image"
+								bind:value={imageUrl}
+								errorMessage={imageUrlError}
 								disabled={isLoading}
 							/>
+						</div>
+					{:else if activeTab === "pseudo"}
+						<div class="form-fields">
+							<InputField
+								type="text"
+								id="pseudo"
+								label="Pseudo"
+								bind:value={pseudo}
+								errorMessage={pseudoError}
+								required
+								disabled={isLoading}
+							/>
+						</div>
+					{:else if activeTab === "password"}
+						<div class="form-fields">
 							<InputField
 								type="password"
-								id="password_new"
+								id="password_show"
 								label="Nouveau mot de passe"
 								bind:value={newPassword}
 								errorMessage={newPasswordError}
@@ -249,6 +283,22 @@
 								disabled={isLoading}
 							/>
 						</div>
+					{/if}
+
+					<div class="current-password-section">
+						<h3>Mot de passe actuel</h3>
+						<p class="password-info">
+							Requis pour toute modification
+						</p>
+						<InputField
+							type="password"
+							id="password_current"
+							label="Mot de passe actuel"
+							bind:value={currentPassword}
+							errorMessage={currentPasswordError}
+							disabled={isLoading}
+							required
+						/>
 					</div>
 				</main>
 			</div>
@@ -342,6 +392,39 @@
 		fill: var(--fgColor);
 	}
 
+	.tabs-container {
+		display: flex;
+		border-bottom: 1px solid var(--borderColor2);
+		background-color: var(--bgColorSecondary);
+	}
+
+	.tab-button {
+		flex: 1;
+		padding: 12px 16px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 14px;
+		color: var(--fgColor);
+		transition: all 0.2s ease;
+		border-bottom: 3px solid transparent;
+	}
+
+	.tab-button.active {
+		color: var(--titleColor);
+		border-bottom: 3px solid var(--titleColor);
+		font-weight: 500;
+	}
+
+	.tab-button:hover:not(.active):not(:disabled) {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+
+	.tab-button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
 	.modal-content {
 		padding: 20px;
 		flex-grow: 1;
@@ -376,11 +459,6 @@
 
 	.profile-form {
 		width: 100%;
-	}
-
-	.modal-container {
-		position: relative;
-		z-index: 1;
 	}
 
 	.profile-picture-container {
@@ -420,15 +498,21 @@
 		margin-top: 20px;
 	}
 
-	.password-section {
+	.current-password-section {
 		margin-top: 30px;
+		border-top: 1px solid var(--borderColor2);
+		padding-top: 20px;
 	}
 
-	.password-section h3 {
+	.current-password-section h3 {
 		color: var(--titleColor);
 		font-size: 1.1rem;
+		margin-bottom: 5px;
+	}
+
+	.password-info {
+		color: var(--fgColorForward);
+		font-size: 0.9rem;
 		margin-bottom: 15px;
-		border-bottom: 1px solid var(--borderColor2);
-		padding-bottom: 8px;
 	}
 </style>
