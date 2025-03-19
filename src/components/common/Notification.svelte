@@ -57,7 +57,7 @@
 <style>
 	.notification {
 		position: fixed;
-		top: 20px;
+		bottom: 20px;
 		right: 20px;
 		min-width: 300px;
 		max-width: 400px;

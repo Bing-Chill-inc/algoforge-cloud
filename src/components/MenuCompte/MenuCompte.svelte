@@ -4,7 +4,6 @@
 	import ProfileForm from "./ProfileForm.svelte"; // Ajout de l'import
 	import { logout, getUser } from "../../stores/userStores";
 	import { notifications } from "../../stores/notificationStore";
-	import { get } from "svelte/store";
 	import type { User } from "../../utils/types";
 
 	let isMenuOpen = false;
