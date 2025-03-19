@@ -130,4 +130,12 @@ export function getUser() {
 	return get(userStore);
 }
 
+// Fonctions pour savoir si rememberMe est coché
+export function isRememberMeChecked() {
+	const cookies = document.cookie ? document.cookie.split("; ") : [];
+	const tokenCookie = cookies.find((row) => row.startsWith("authToken="));
+
+	return tokenCookie !== undefined;
+}
+
 export default userStore;

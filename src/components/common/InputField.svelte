@@ -5,6 +5,7 @@
 	export let value: string = "";
 	export let errorMessage: string = "";
 	export let required: boolean = false;
+	export let disabled: boolean = false;
 
 	let isPasswordVisible = false;
 
@@ -24,6 +25,8 @@
 			{id}
 			bind:value
 			{required}
+			{disabled}
+			class={value ? "has-value" : ""}
 		/>
 		{#if id === "password_show"}
 			<button
@@ -33,6 +36,7 @@
 				aria-label={isPasswordVisible
 					? "Masquer le mot de passe"
 					: "Afficher le mot de passe"}
+				{disabled}
 			>
 				{#if isPasswordVisible}
 					<svg
@@ -107,11 +111,16 @@
 	}
 
 	.user-box input:focus ~ label,
-	.user-box input:valid ~ label {
+	.user-box input.has-value ~ label {
 		top: -20px;
 		left: 0;
 		color: var(--titleColor);
 		font-size: 12px;
+	}
+
+	.user-box input:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 
 	.error-message {
@@ -138,8 +147,13 @@
 		transition: opacity 0.2s;
 	}
 
-	.toggle-password:hover {
+	.toggle-password:hover:not(:disabled) {
 		opacity: 1;
+	}
+
+	.toggle-password:disabled {
+		cursor: not-allowed;
+		opacity: 0.4;
 	}
 
 	svg {
