@@ -61,8 +61,8 @@
 		border: none;
 		fill: var(--bgColor);
 		color: var(--bgColor);
-		background-color: var(--primary-color);
-		box-shadow: 0 0 0.5vw var(--primary-color);
+		background-color: var(--titleColor);
+		box-shadow: 0 0 0.5vw var(--titleColor);
 		pointer-events: none;
 	}
 
@@ -84,7 +84,7 @@
 		user-select: none;
 		transition:
 			box-shadow 0.5s ease,
-			color 0.3s ease-in-out,
+			color 0.3s ease,
 			background-color 0.3s ease-in-out;
 	}
 
