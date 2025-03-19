@@ -34,6 +34,13 @@
 	let activeTab = "photo"; // "photo", "pseudo", "password"
 
 	function closeModal() {
+		// Réinitialiser les champs du formulaire
+		imageUrl = user?.urlPfp || "";
+		pseudo = user?.pseudo || "";
+		currentPassword = "";
+		newPassword = "";
+		confirmPassword = "";
+
 		onClose();
 	}
 
@@ -157,6 +164,8 @@
 						"Profil mis à jour avec succès",
 					);
 					closeModal();
+
+					window.location.reload();
 				}
 			} catch (error) {
 				console.error(
