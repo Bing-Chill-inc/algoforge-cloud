@@ -1,9 +1,11 @@
 <script lang="ts">
 	import NavBar from "./NavBar/NavBar.svelte";
+	import NewButtonMultiple from "./NewButtonMultiple/NewButtonMultiple.svelte";
 	import UsageIndicator from "./UsageIndicator/UsageIndicator.svelte";
 </script>
 
 <main class="side-bar">
+	<NewButtonMultiple />
 	<NavBar />
 	<UsageIndicator used={50} total={100} />
 </main>
