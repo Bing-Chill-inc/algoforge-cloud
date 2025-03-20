@@ -11,7 +11,7 @@
 		></div>
 	</div>
 	<p class="usage-indicator-number">
-		{used} algorithmes réalisés sur {total} disponibles
+		<b>{used}</b> algorithmes réalisés sur <b>{total}</b> disponibles
 	</p>
 </main>
 
@@ -26,16 +26,17 @@
 
 	.usage-indicator-bar {
 		width: 80%;
-		height: 15px;
-		background-color: var(--off-background-color);
+		height: 10px;
+		background-color: var(--bgColorSecondary);
+		box-shadow: 0 0 4px var(--titleColor);
+		border: 1px solid var(--titleColor);
 		border-radius: 20px;
 		overflow: hidden;
 	}
 
 	.usage-indicator-bar-inner {
 		height: 100%;
-		background-color: var(--primary-color);
-		border-radius: 0 20px 20px 0;
+		background-color: var(--titleColor);
 	}
 
 	.usage-indicator-number {
