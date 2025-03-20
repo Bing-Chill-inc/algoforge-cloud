@@ -10,6 +10,24 @@ import type { User } from "../utils/types";
 // Création du store utilisateur
 const userStore = writable<User | null>(null);
 
+// Clé pour le localStorage pour synchroniser entre les onglets
+const AUTH_STATUS_KEY = "auth_status";
+
+// Écouter les changements de localStorage entre les onglets
+if (typeof window !== "undefined") {
+	window.addEventListener("storage", (event) => {
+		if (event.key === AUTH_STATUS_KEY && event.newValue === "logged_out") {
+			// Un autre onglet s'est déconnecté, déconnecter cet onglet aussi
+			clearLocalAuth();
+			userStore.set(null);
+			// Rediriger vers la page de connexion sans recharger la page
+			if (document.location.hash !== "#/login") {
+				document.location.hash = "#/login";
+			}
+		}
+	});
+}
+
 // Fonction pour enregistrer l'utilisateur après connexion
 export function setUser(user: User, rememberMe: boolean) {
 	// Stocker l'utilisateur en mémoire
@@ -35,7 +53,18 @@ export function setUser(user: User, rememberMe: boolean) {
 			sessionStorage.setItem("authToken", token);
 			sessionStorage.setItem("userId", userId);
 		}
+
+		// Indiquer que l'utilisateur est connecté
+		localStorage.setItem(AUTH_STATUS_KEY, "logged_in");
 	}
+}
+
+// Fonction pour nettoyer les données d'authentification locales
+function clearLocalAuth() {
+	document.cookie = "authToken=; path=/; max-age=0";
+	document.cookie = "userId=; path=/; max-age=0";
+	sessionStorage.removeItem("authToken");
+	sessionStorage.removeItem("userId");
 }
 
 // Fonction pour récupérer le token et l'ID utilisateur
@@ -114,12 +143,16 @@ export async function loadUser() {
 // Fonction pour se déconnecter
 export function logout() {
 	userStore.set(null);
-	document.cookie = "authToken=; path=/; max-age=0"; // Supprimer le cookie
-	document.cookie = "userId=; path=/; max-age=0"; // Supprimer l'ID
-	sessionStorage.removeItem("authToken"); // Supprimer sessionStorage
-	sessionStorage.removeItem("userId");
-	document.location.hash = "#/login"; // Rediriger vers la page de connexion
+
+	// Nettoyer les cookies et le sessionStorage
+	clearLocalAuth();
+
+	// Signaler aux autres onglets que l'utilisateur s'est déconnecté
+	localStorage.setItem(AUTH_STATUS_KEY, "logged_out");
+
+	document.location.hash = "#/login";
 }
+
 // Fonction pour vérifier si l'utilisateur est connecté
 export function isUserLoggedIn() {
 	return get(userStore) !== null;

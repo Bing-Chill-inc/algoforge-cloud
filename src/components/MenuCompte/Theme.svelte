@@ -46,7 +46,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		text-align-last: center;
-		padding-right: 30px; /* Make room for the arrow */
+		padding-right: 30px;
 	}
 
 	select:hover {
