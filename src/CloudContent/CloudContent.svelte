@@ -15,11 +15,13 @@
 
 <style>
 	.cloud-content {
+		overflow: hidden;
 		flex: 1;
+		margin-right: 10px;
 		width: calc(100% - 300px);
 		height: calc(100vh - 80px);
-		background-color: var(--bgColorTertiary);
+		background-color: var(--bgColorTeriary);
 		border-radius: 20px;
-		box-shadow: 0 0 10px -5px var(--primary-color);
+		box-shadow: 0 0 6px 0 var(--titleColor);
 	}
 </style>
