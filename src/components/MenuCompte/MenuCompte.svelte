@@ -26,6 +26,23 @@
 	}
 
 	onMount(() => {
+		// Vérifier si le paramètre openProfileModal est présent dans l'URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const hashParams = new URLSearchParams(
+			window.location.hash.replace("#/?", ""),
+		);
+
+		if (
+			urlParams.get("openProfileModal") === "true" ||
+			hashParams.get("openProfileModal") === "true"
+		) {
+			isProfileModalOpen = true;
+			// Nettoyer l'URL pour éviter que le modal s'ouvre à chaque rafraîchissement
+			const cleanUrl =
+				window.location.pathname + window.location.hash.split("?")[0];
+			window.history.replaceState({}, document.title, cleanUrl);
+		}
+
 		const closeMenu = (event: MouseEvent) => {
 			if (!(event.target as HTMLElement).closest(".menu-container")) {
 				isMenuOpen = false;
