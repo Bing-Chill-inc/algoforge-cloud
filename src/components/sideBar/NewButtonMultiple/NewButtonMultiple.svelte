@@ -6,7 +6,6 @@
 	import {
 		createAlgo,
 		getLastAlgo,
-		getAlgos,
 		type TAlgoCreateDTO,
 	} from "../../../stores/algoStore";
 	export let type: "button" | "reset" | "submit" | null = "button";
@@ -90,7 +89,7 @@
 	<button
 		{type}
 		{disabled}
-		class={showOptions ? "active" : undefined}
+		class={`mainButton ${showOptions ? "active" : undefined}`}
 		on:click={toggleOptions}
 	>
 		<div class="iconContainerPlus">+</div>
@@ -99,22 +98,36 @@
 	</button>
 
 	{#if showOptions}
-		<ul class="optionsList">
-			<li class="optionItem" type="button" on:click={handleClickNewAlgo}>
+		<div class="optionsList">
+			<button
+				class="optionItem"
+				type="button"
+				on:click={handleClickNewAlgo}
+			>
 				Nouvel Algorithme
-			</li>
-			<li class="optionItem disabled">Nouveau Dossier</li>
-		</ul>
+			</button>
+			<button class="optionItem disabled" type="button">
+				Nouveau Dossier
+			</button>
+		</div>
 	{:else if initialLoad}
-		<ul class="optionsList initialHide">
-			<li class="optionItem">Nouvel Algorithme</li>
-			<li class="optionItem disabled">Nouveau Dossier</li>
-		</ul>
+		<div class="optionsList initialHide">
+			<button class="optionItem" type="button">
+				Nouvel Algorithme
+			</button>
+			<button class="optionItem disabled" type="button">
+				Nouveau Dossier
+			</button>
+		</div>
 	{:else}
-		<ul class="optionsList hide">
-			<li class="optionItem">Nouvel Algorithme</li>
-			<li class="optionItem disabled">Nouveau Dossier</li>
-		</ul>
+		<div class="optionsList hide">
+			<button class="optionItem" type="button">
+				Nouvel Algorithme
+			</button>
+			<button class="optionItem disabled" type="button">
+				Nouveau Dossier
+			</button>
+		</div>
 	{/if}
 </main>
 
@@ -128,7 +141,7 @@
 		flex-direction: column;
 	}
 
-	button {
+	.mainButton {
 		display: flex;
 		user-select: none;
 		padding: 12px 3px;
@@ -188,6 +201,7 @@
 
 	.optionItem {
 		user-select: none;
+		width: 100%;
 		padding: 6px 3px;
 		margin-bottom: 5px;
 		font-size: 1rem;
@@ -195,7 +209,7 @@
 		cursor: pointer;
 		background: var(--bgColor);
 		border-radius: 10px;
-		box-shadow: 0 0 0.5vw var(--bgColorTertiary);
+		box-shadow: 0 0 4px var(--bgColorSecondary);
 		border: 1px solid var(--titleColor);
 		font-weight: 700;
 		transition:
