@@ -1,5 +1,14 @@
 <script lang="ts">
 	import { onMount, onDestroy } from "svelte";
+	import { getUser } from "../../../stores/userStores";
+	import { notifications } from "../../../stores/notificationStore";
+	import type { User } from "../../../utils/types";
+	import {
+		createAlgo,
+		getLastAlgo,
+		getAlgos,
+		type TAlgoCreateDTO,
+	} from "../../../stores/algoStore";
 	export let type: "button" | "reset" | "submit" | null = "button";
 	export let disabled: boolean = false;
 	let showOptions = false;
@@ -22,6 +31,50 @@
 			!event.composedPath().includes(newButtonMultiple)
 		)
 			showOptions = false;
+	}
+
+	async function createNewAlgo() {
+		const user: User | null = getUser();
+		let defaultAlgo: TAlgoCreateDTO | undefined = undefined;
+
+		if (user !== null && user.id !== undefined) {
+			defaultAlgo = {
+				nom: "Nouvel Algorithme",
+				ownerId: user.id || 0,
+				sourceCode: JSON.parse(
+					`[{"typeElement":"DictionnaireDonnee","types":{},"signification":{}}]`,
+				),
+			};
+		} else {
+			notifications.add(
+				"error",
+				"Vous devez être connecté pour créer un algorithme",
+			);
+			console.error("Vous devez être connecté pour créer un algorithme");
+			return;
+		}
+
+		createAlgo(defaultAlgo)
+			.then(() => {
+				notifications.add("success", "Algorithme créé avec succès");
+				window.open(`/edit/#/${getLastAlgo().id}`, "_blank");
+			})
+			.catch((error) => {
+				console.error(
+					"Erreur lors de la création de l'algorithme:",
+					error,
+				);
+				notifications.add(
+					"error",
+					"Erreur lors de la création de l'algorithme",
+				);
+			});
+	}
+
+	function handleClickNewAlgo(
+		event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement },
+	) {
+		createNewAlgo();
 	}
 
 	onMount(() => {
@@ -47,7 +100,9 @@
 
 	{#if showOptions}
 		<ul class="optionsList">
-			<li class="optionItem">Nouvel Algorithme</li>
+			<li class="optionItem" type="button" on:click={handleClickNewAlgo}>
+				Nouvel Algorithme
+			</li>
 			<li class="optionItem disabled">Nouveau Dossier</li>
 		</ul>
 	{:else if initialLoad}
@@ -82,7 +137,6 @@
 		width: 80%;
 		text-decoration: none;
 		border-radius: 10px;
-		margin-top: 20px;
 		cursor: pointer;
 		color: var(--bgColor);
 		background-color: var(--titleColor);
