@@ -19,6 +19,7 @@
 		flex: 1;
 		margin-right: 10px;
 		width: calc(100% - 300px);
+		min-height: 450px;
 		height: calc(100vh - 80px);
 		background-color: var(--bgColorTeriary);
 		border-radius: 20px;
