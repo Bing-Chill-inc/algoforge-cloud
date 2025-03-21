@@ -16,3 +16,13 @@ export type User = {
 		token: string;
 	}[];
 };
+
+// Définition du type Algo
+export type Algo = {
+	id: number;
+	nom: string;
+	ownerId: number;
+	sourceCode: JSON;
+	dateCreation?: string;
+	dateModification?: string;
+};

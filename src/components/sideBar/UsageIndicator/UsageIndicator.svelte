@@ -5,17 +5,19 @@
 
 <main class="usage-indicator">
 	<div class="usage-indicator-bar">
-		<div class="usage-indicator-bar-inner" style="width: {(used / total) * 100}%"></div>
+		<div
+			class="usage-indicator-bar-inner"
+			style="width: {(used / total) * 100}%"
+		></div>
 	</div>
-	<p class="usage-indicator-number">{used} algorithmes réalisés sur {total} disponibles</p>
+	<p class="usage-indicator-number">
+		<b>{used}</b> algorithmes réalisés sur <b>{total}</b> disponibles
+	</p>
 </main>
 
 <style>
 	.usage-indicator {
-		position: absolute;
-		bottom: 30px;
-		right: 50%;
-		transform: translateX(50%);
+		position: relative;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -24,21 +26,22 @@
 
 	.usage-indicator-bar {
 		width: 80%;
-		height: 15px;
-		background-color: var(--off-background-color);
+		height: 10px;
+		background-color: var(--bgColorSecondary);
+		box-shadow: 0 0 4px var(--titleColor);
+		border: 1px solid var(--titleColor);
 		border-radius: 20px;
 		overflow: hidden;
 	}
 
 	.usage-indicator-bar-inner {
 		height: 100%;
-		background-color: var(--primary-color);
-		border-radius: 0 20px 20px 0;
+		background-color: var(--titleColor);
 	}
 
 	.usage-indicator-number {
-		color: white;
-		font-size: 0.7em;
+		color: var(--fgColor);
+		font-size: 0.7rem;
 		margin-top: 5px;
 	}
 </style>

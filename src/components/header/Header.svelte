@@ -175,7 +175,11 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 15px 15px;
+		padding: 0 15px;
+	}
+
+	.logoWrapper {
+		height: 70px;
 	}
 
 	.logoWrapper > svg {

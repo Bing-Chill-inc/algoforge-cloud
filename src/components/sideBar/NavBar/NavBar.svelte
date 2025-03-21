@@ -1,24 +1,50 @@
 <script lang="ts">
 	import DynamicAsset from "./assets/DynamicAsset.svelte";
+	import { activeItem } from "../../../stores/activeItemStore";
+
+	function setActiveItem(item: string) {
+		activeItem.set(item);
+	}
 </script>
 
 <main class="nav-bar">
-	<div class="nav-item">
+	<button
+		type="button"
+		class="nav-item"
+		class:active={$activeItem === "Home"}
+		on:click={() => setActiveItem("Home")}
+		on:keydown={(e) => e.key === "Enter" && setActiveItem("Home")}
+		aria-label="Home"
+	>
 		<DynamicAsset assetIdentifier="Home" />
 		Accueil
-	</div>
-	<div class="nav-item">
+	</button>
+	<button
+		type="button"
+		class="nav-item"
+		class:active={$activeItem === "Clock"}
+		on:click={() => setActiveItem("Clock")}
+		on:keydown={(e) => e.key === "Enter" && setActiveItem("Clock")}
+		aria-label="Clock"
+	>
 		<DynamicAsset assetIdentifier="Clock" />
 		Récent
-	</div>
-	<div class="nav-item">
+	</button>
+	<button
+		type="button"
+		class="nav-item"
+		class:active={$activeItem === "Shared"}
+		on:click={() => setActiveItem("Shared")}
+		on:keydown={(e) => e.key === "Enter" && setActiveItem("Shared")}
+		aria-label="Shared"
+	>
 		<DynamicAsset assetIdentifier="Shared" />
 		Partagé avec moi
-	</div>
-	<div class="nav-item">
+	</button>
+	<!-- <div class="nav-item">
 		<DynamicAsset assetIdentifier="Trash" />
 		Corbeille
-	</div>
+	</div> -->
 </main>
 
 <style>
@@ -28,7 +54,16 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		gap: 80px;
+		gap: 10px;
+	}
+
+	.nav-item.active {
+		border: none;
+		fill: var(--bgColor);
+		color: var(--bgColor);
+		background-color: var(--titleColor);
+		box-shadow: 0 0 0.5vw var(--titleColor);
+		pointer-events: none;
 	}
 
 	.nav-item {
@@ -36,15 +71,30 @@
 		align-items: center;
 		gap: 20px;
 		margin-left: 20px;
-		font-size: 1.75em;
+		font-size: 1rem;
 		width: 80%;
 		padding: 10px;
 		padding-left: 20px;
 		border-radius: 10px;
+		font-weight: 700;
+		color: var(--fgColor);
+		fill: var(--fgColor);
+		border: none;
+		background-color: transparent;
+		user-select: none;
+		transition:
+			box-shadow 0.5s ease,
+			color 0.3s ease,
+			background-color 0.3s ease-in-out;
 	}
 
 	.nav-item:hover {
+		border: none;
 		cursor: pointer;
-		background-color: var(--alt-background-color);
+		fill: var(--bgColor);
+		color: var(--bgColor);
+		background-color: var(--fgColorHover);
+		box-shadow: 0 0 0.5vw var(--fgColor);
+		font-weight: 700;
 	}
 </style>
