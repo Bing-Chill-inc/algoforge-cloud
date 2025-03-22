@@ -2,6 +2,7 @@
 	import InputField from "../common/InputField.svelte";
 	import Button from "../common/Button.svelte";
 	import { notifications } from "../../stores/notificationStore";
+	import Link from "../common/Link.svelte";
 
 	let email: string = "";
 	let password: string = "";
@@ -118,6 +119,9 @@
 			required
 		/>
 		<Button type="submit">S'inscrire</Button>
+		<div class="login-link">
+			<Link href="#/login">Déjà un compte ? Se connecter</Link>
+		</div>
 	</form>
 </main>
 
@@ -125,5 +129,11 @@
 	form {
 		width: 100%;
 		max-width: 400px;
+	}
+
+	.login-link {
+		margin-top: 1rem;
+		display: block;
+		text-align: center;
 	}
 </style>
