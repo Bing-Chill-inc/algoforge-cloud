@@ -16,13 +16,21 @@ const AUTH_STATUS_KEY = "auth_status";
 // Écouter les changements de localStorage entre les onglets
 if (typeof window !== "undefined") {
 	window.addEventListener("storage", (event) => {
-		if (event.key === AUTH_STATUS_KEY && event.newValue === "logged_out") {
-			// Un autre onglet s'est déconnecté, déconnecter cet onglet aussi
-			clearLocalAuth();
-			userStore.set(null);
-			// Rediriger vers la page de connexion sans recharger la page
-			if (document.location.hash !== "#/login") {
-				document.location.hash = "#/login";
+		if (event.key === AUTH_STATUS_KEY) {
+			if (event.newValue === "logged_out") {
+				// Un autre onglet s'est déconnecté, déconnecter cet onglet aussi
+				clearLocalAuth();
+				userStore.set(null);
+				// Rediriger vers la page de connexion sans recharger la page
+				if (document.location.hash !== "#/login") {
+					document.location.hash = "#/login";
+				}
+			} else if (
+				event.newValue === "logged_in" &&
+				isRememberMeChecked()
+			) {
+				// Un autre onglet s'est connecté, rafraîchir cette page
+				window.location.reload();
 			}
 		}
 	});
