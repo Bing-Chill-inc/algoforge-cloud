@@ -74,12 +74,12 @@
 	}
 
 	.notification.success {
-		background-color: #4caf50;
+		background-color: var(--goodColor);
 		color: white;
 	}
 
 	.notification.warning {
-		background-color: #ff9800;
+		background-color: var(--warningColor);
 		color: white;
 	}
 

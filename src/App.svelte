@@ -37,13 +37,26 @@
 	// Second onMount to handle routing
 	onMount(() => {
 		const handleHashChange = () => {
-			currentHash = window.location.hash;
+			// Extract the base hash without query parameters
+			const fullHash = window.location.hash;
+			const hashParts = fullHash.split("?");
+			currentHash = hashParts[0];
+			const queryParams = hashParts.length > 1 ? hashParts[1] : "";
+
+			// Check if the route exists
 			if (!routes[currentHash]) {
 				window.location.hash = "#/login";
 			} else if (currentHash === "#/login" && isUserLoggedIn()) {
-				window.location.hash = "#/";
+				// Preserve query parameters when redirecting
+				window.location.hash =
+					"#/" + (queryParams ? "?" + queryParams : "");
 			} else {
 				CurrentComponent = routes[currentHash];
+
+				// Log query parameters for debugging
+				if (queryParams) {
+					console.log("Query parameters detected:", queryParams);
+				}
 			}
 		};
 
