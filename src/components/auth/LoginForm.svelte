@@ -117,4 +117,8 @@
 		display: block;
 		text-align: center;
 	}
+
+	.login-form :global(button[type="submit"]) {
+		display: inline-block;
+	}
 </style>
