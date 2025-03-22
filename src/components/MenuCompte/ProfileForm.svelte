@@ -6,6 +6,7 @@
 		setUser,
 		isRememberMeChecked,
 		getSessionData,
+		extendCookieExpiration,
 	} from "../../stores/userStores";
 	import type { User } from "../../utils/types";
 	import InputField from "../common/InputField.svelte";
@@ -158,6 +159,7 @@
 					if (responseData.data) {
 						// Mise à jour du store utilisateur
 						setUser(responseData.data, isRememberMeChecked());
+						extendCookieExpiration();
 					}
 					notifications.add(
 						"success",
