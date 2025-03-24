@@ -141,6 +141,7 @@ export async function loadUser() {
 
 			// Stocker l'utilisateur dans le store
 			userStore.set(user);
+			extendCookieExpiration();
 		} catch (error) {
 			console.error("Erreur lors du chargement de l'utilisateur:", error);
 			logout();
@@ -171,12 +172,30 @@ export function getUser() {
 	return get(userStore);
 }
 
-// Fonctions pour savoir si rememberMe est coché
+// Fonction pour savoir si rememberMe est coché
 export function isRememberMeChecked() {
 	const cookies = document.cookie ? document.cookie.split("; ") : [];
 	const tokenCookie = cookies.find((row) => row.startsWith("authToken="));
 
 	return tokenCookie !== undefined;
+}
+
+// Fonction pour prolonger la durée des cookies de 48 heures
+export function extendCookieExpiration() {
+	const sessionData = getSessionData();
+
+	if (sessionData && isRememberMeChecked()) {
+		const extensionTime = 48 * 60 * 60;
+
+		const { token, userId } = sessionData;
+
+		document.cookie = `authToken=${token}; path=/; max-age=${extensionTime}; Secure; SameSite=Strict`;
+		document.cookie = `userId=${userId}; path=/; max-age=${extensionTime}; Secure; SameSite=Strict`;
+
+		return true;
+	}
+
+	return false;
 }
 
 export default userStore;

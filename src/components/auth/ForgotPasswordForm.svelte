@@ -68,4 +68,9 @@
 		width: 100%;
 		max-width: 400px;
 	}
+
+	.forgot-password-form :global(button[type="submit"]) {
+		display: inline-block;
+		margin-top: 0;
+	}
 </style>
