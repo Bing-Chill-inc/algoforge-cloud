@@ -213,6 +213,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: start;
+		max-width: 235px;
 	}
 
 	.greeting {
@@ -220,6 +221,10 @@
 		font-weight: 500;
 		margin: 0 0 5px 0;
 		color: var(--fgColor);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 100%;
 	}
 
 	.email {
