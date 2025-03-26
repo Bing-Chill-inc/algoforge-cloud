@@ -21,15 +21,12 @@ const algoStore = writable<Algo[]>([]);
 const sessionData = getSessionData();
 const API_BASE_URL = "/api/algos";
 
-export const fetchAlgosByUserId = async (
-	userId: number,
-	options?: {
-		deleted?: boolean;
-		sorted?: string;
-	},
-) => {
+export const fetchAlgosByUserId = async (options?: {
+	deleted?: boolean;
+	sorted?: string;
+}) => {
 	// Construire l'URL avec les paramètres de requête
-	let url = `${API_BASE_URL}/byUserId/${userId}`;
+	let url = `${API_BASE_URL}/byUserId/${sessionData?.userId}`;
 	const params = new URLSearchParams();
 
 	if (options?.deleted !== undefined) {
