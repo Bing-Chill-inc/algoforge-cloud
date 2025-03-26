@@ -21,10 +21,46 @@ const algoStore = writable<Algo[]>([]);
 const sessionData = getSessionData();
 const API_BASE_URL = "/api/algos";
 
-export const fetchAlgosByUserId = async (userId: number) => {
-	const response = await fetch(`${API_BASE_URL}/byUserId/${userId}`);
-	const data = await response.json();
-	algoStore.set(data);
+export const fetchAlgosByUserId = async (
+	userId: number,
+	options?: {
+		deleted?: boolean;
+		sorted?: string;
+	},
+) => {
+	// Construire l'URL avec les paramètres de requête
+	let url = `${API_BASE_URL}/byUserId/${userId}`;
+	const params = new URLSearchParams();
+
+	if (options?.deleted !== undefined) {
+		params.append("deleted", options.deleted.toString());
+	}
+
+	if (options?.sorted) {
+		params.append("sorted", options.sorted);
+	}
+
+	// Ajouter les paramètres à l'URL s'il y en a
+	if (params.toString()) {
+		url += `?${params.toString()}`;
+	}
+
+	const response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${sessionData?.token}`,
+		},
+	});
+	const responseData = await response.json();
+
+	if (!response.ok) {
+		throw new Error(
+			`Impossible de récupérer les algorithmes: ${responseData.message}`,
+		);
+	}
+
+	// Mise à jour du store avec les données récupérées
+	algoStore.set(responseData.data || []);
+	return responseData;
 };
 
 export const fetchAlgoById = async (id: number) => {
@@ -75,10 +111,24 @@ export const updateAlgo = async (id: number, algo: TAlgoUpdateDTO) => {
 };
 
 export const deleteAlgo = async (id: number) => {
-	await fetch(`${API_BASE_URL}/${id}`, {
+	const response = await fetch(`${API_BASE_URL}/${id}`, {
 		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${sessionData?.token}`,
+		},
 	});
+
+	const responseData = await response.json();
+
+	if (!response.ok) {
+		throw new Error(
+			`Impossible de supprimer l'algorithme: ${responseData.message}`,
+		);
+	}
+
+	// Mise à jour du store en supprimant l'algorithme supprimé
 	algoStore.update((current) => current.filter((a) => a.id !== id));
+	return responseData;
 };
 
 // Fonctions pour récupérer les algorithmes
