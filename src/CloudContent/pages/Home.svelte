@@ -22,13 +22,13 @@
 	});
 </script>
 
-<main class="home">
+<main class="mainContent">
 	<h1>Bienvenue dans ta forge <b>{user?.pseudo}</b> !</h1>
 	<AlgoList {algos} {loading} {error} />
 </main>
 
 <style>
-	.home {
+	.mainContent {
 		display: flex;
 		flex-direction: column;
 		align-items: center;

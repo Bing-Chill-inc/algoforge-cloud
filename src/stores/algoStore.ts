@@ -51,7 +51,7 @@ export const convertAlgoFetch = (algo: TAlgoFetch): Algo => {
 
 export const fetchAlgosByUserId = async (options?: {
 	deleted?: boolean;
-	sorted?: string;
+	sorted?: boolean;
 }) => {
 	// Construire l'URL avec les paramètres de requête
 	let url = `${API_BASE_URL}/byUserId/${sessionData?.userId}`;
@@ -62,7 +62,7 @@ export const fetchAlgosByUserId = async (options?: {
 	}
 
 	if (options?.sorted) {
-		params.append("sorted", options.sorted);
+		params.append("sorted", options.sorted.toString());
 	}
 
 	// Ajouter les paramètres à l'URL s'il y en a
