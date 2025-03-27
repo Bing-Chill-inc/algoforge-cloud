@@ -1,21 +1,24 @@
 <script lang="ts">
 	import { activeItem } from "../stores/activeItemStore";
-	import FileList from "./components/FileList.svelte";
+	import Home from "./pages/Home.svelte";
+	import Recent from "./pages/Recent.svelte";
+	import Trash from "./pages/Trash.svelte";
 </script>
 
 <main class="cloud-content">
 	{#if $activeItem === "Home"}
-		<FileList />
+		<Home />
 	{:else if $activeItem === "Clock"}
-		<h1>RecentFiles</h1>
-	{:else if $activeItem === "Shared"}
-		<h1>SharedFiles</h1>
+		<Recent />
+	{:else if $activeItem === "Trash"}
+		<Trash />
 	{/if}
 </main>
 
 <style>
 	.cloud-content {
-		overflow: hidden;
+		overflow: auto;
+		width: 100%;
 		flex: 1;
 		margin-right: 10px;
 		width: calc(100% - 300px);

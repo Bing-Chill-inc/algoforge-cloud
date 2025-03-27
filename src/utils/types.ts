@@ -25,4 +25,7 @@ export type Algo = {
 	sourceCode: JSON;
 	dateCreation?: string;
 	dateModification?: string;
+	dateSuppression?: string;
+	idDossier?: number;
+	droits?: string;
 };
