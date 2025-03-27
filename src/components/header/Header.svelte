@@ -4,6 +4,10 @@
 	function handleLogoClick() {
 		window.location.hash = "#/";
 	}
+
+	function handleGoEditeurClick() {
+		window.open("/edit/", "self");
+	}
 </script>
 
 <header>
@@ -161,8 +165,25 @@
 			</g>
 		</svg>
 	</div>
-	<div class="menuCompteWrapper">
-		<MenuCompte />
+	<div class="actions">
+		<button id="goEditeurButton" on:click={handleGoEditeurClick}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				id="Filled"
+				viewBox="0 0 24 24"
+				><path
+					d="M18,19v4.7a4.968,4.968,0,0,0,1.879-1.164l2.656-2.658A4.954,4.954,0,0,0,23.7,18H19A1,1,0,0,0,18,19Z"
+				/><path
+					d="M7.172,13.828A4,4,0,0,0,6,16.657V18H7.343a4,4,0,0,0,2.829-1.172L21.5,5.5a2.121,2.121,0,0,0-3-3Z"
+				/><path
+					d="M24,4.952a4.087,4.087,0,0,1-1.08,1.962L11.586,18.243A5.961,5.961,0,0,1,7.343,20H6a2,2,0,0,1-2-2V16.657a5.957,5.957,0,0,1,1.758-4.242L17.086,1.086A4.078,4.078,0,0,1,19.037,0c-.013,0-.024,0-.037,0H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16V19a3,3,0,0,1,3-3h5V5C24,4.984,24,4.969,24,4.952Z"
+				/>
+			</svg>
+			<label for="goEditeurButton">Aller dans l'éditeur</label>
+		</button>
+		<div class="menuCompteWrapper">
+			<MenuCompte />
+		</div>
 	</div>
 </header>
 
@@ -201,5 +222,58 @@
 	}
 	#logoAlgoForge:active {
 		scale: 0.9;
+	}
+
+	#goEditeurButton {
+		display: flex;
+		border: none;
+		width: fit-content;
+		height: fit-content;
+		background: none;
+		fill: var(--fgColor);
+		cursor: pointer;
+		margin-right: 20px;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		font-size: var(--font-size3);
+		gap: 5px;
+		color: var(--fgColor);
+		margin-top: 4px;
+	}
+
+	#goEditeurButton:hover {
+		scale: none;
+		fill: var(--fgColorHover);
+		color: var(--fgColorHover);
+	}
+
+	#goEditeurButton:active {
+		scale: 0.9;
+		fill: var(--titleColor);
+		color: var(--titleColor);
+	}
+
+	#goEditeurButton > label {
+		cursor: pointer;
+		color: inherit;
+		font-size: inherit;
+	}
+
+	#goEditeurButton > svg {
+		fill: inherit;
+		width: 20px;
+		height: 20px;
+		background: none;
+	}
+
+	.actions {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-evenly;
+		width: fit-content;
+		height: 100%;
+		gap: 12px;
 	}
 </style>
