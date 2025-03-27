@@ -23,7 +23,7 @@
 </script>
 
 <main class="mainContent">
-	<h1>Bienvenue dans ta forge <b>{user?.pseudo}</b> !</h1>
+	<h1>Bienvenue dans ta Forge, <b>{user?.pseudo}</b> !</h1>
 	<AlgoList {algos} {loading} {error} />
 </main>
 
