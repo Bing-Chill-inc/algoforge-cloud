@@ -22,7 +22,7 @@
 
 <main class="mainContent">
 	<h1>Corbeille</h1>
-	<AlgoList {algos} {loading} {error} />
+	<AlgoList {algos} {loading} {error} isTrash={true} />
 </main>
 
 <style>
