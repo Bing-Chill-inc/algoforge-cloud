@@ -30,21 +30,21 @@
 		<DynamicAsset assetIdentifier="Clock" />
 		Récent
 	</button>
-	<button
-		type="button"
-		class="nav-item"
-		class:active={$activeItem === "Shared"}
-		on:click={() => setActiveItem("Shared")}
-		on:keydown={(e) => e.key === "Enter" && setActiveItem("Shared")}
-		aria-label="Shared"
-	>
+	<button type="button" class="nav-item disabled" aria-label="Shared">
 		<DynamicAsset assetIdentifier="Shared" />
 		Partagé avec moi
 	</button>
-	<!-- <div class="nav-item">
+	<button
+		type="button"
+		class="nav-item"
+		class:active={$activeItem === "Trash"}
+		on:click={() => setActiveItem("Trash")}
+		on:keydown={(e) => e.key === "Enter" && setActiveItem("Trash")}
+		aria-label="Trash"
+	>
 		<DynamicAsset assetIdentifier="Trash" />
 		Corbeille
-	</div> -->
+	</button>
 </main>
 
 <style>
@@ -86,9 +86,16 @@
 			box-shadow 0.5s ease,
 			color 0.3s ease,
 			background-color 0.3s ease-in-out;
+
+		&.disabled {
+			color: var(--fgColorDisabled);
+			fill: var(--fgColorDisabled);
+			border-color: var(--fgColorDisabled);
+			cursor: not-allowed;
+		}
 	}
 
-	.nav-item:hover {
+	.nav-item:is(:not(.disabled):hover) {
 		border: none;
 		cursor: pointer;
 		fill: var(--bgColor);

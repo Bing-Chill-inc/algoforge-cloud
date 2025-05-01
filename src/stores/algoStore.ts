@@ -15,15 +15,43 @@ export type TAlgoUpdateDTO = {
 	sourceCode: JSON;
 };
 
+export type TAlgoFetch = {
+	algorithme: {
+		dateCreation: string;
+		dateModification: string;
+		dateSuppression?: string;
+		id: number;
+		idDossier?: number;
+		nom: string;
+	};
+	droits: string;
+	idAlgorithme: number;
+	idUtilisateur: number;
+};
+
 // Création du store pour les algorithmes
 const algoStore = writable<Algo[]>([]);
 
 const sessionData = getSessionData();
 const API_BASE_URL = "/api/algos";
 
+export const convertAlgoFetch = (algo: TAlgoFetch): Algo => {
+	return {
+		id: algo.algorithme.id,
+		nom: algo.algorithme.nom,
+		ownerId: algo.idUtilisateur,
+		sourceCode: {} as JSON,
+		dateCreation: algo.algorithme.dateCreation,
+		dateModification: algo.algorithme.dateModification,
+		dateSuppression: algo.algorithme.dateSuppression,
+		idDossier: algo.algorithme.idDossier,
+		droits: algo.droits,
+	};
+};
+
 export const fetchAlgosByUserId = async (options?: {
 	deleted?: boolean;
-	sorted?: string;
+	sorted?: boolean;
 }) => {
 	// Construire l'URL avec les paramètres de requête
 	let url = `${API_BASE_URL}/byUserId/${sessionData?.userId}`;
@@ -34,7 +62,7 @@ export const fetchAlgosByUserId = async (options?: {
 	}
 
 	if (options?.sorted) {
-		params.append("sorted", options.sorted);
+		params.append("sorted", options.sorted.toString());
 	}
 
 	// Ajouter les paramètres à l'URL s'il y en a
@@ -56,14 +84,8 @@ export const fetchAlgosByUserId = async (options?: {
 	}
 
 	// Mise à jour du store avec les données récupérées
-	algoStore.set(responseData.data || []);
+	algoStore.set(responseData.data.map(convertAlgoFetch));
 	return responseData;
-};
-
-export const fetchAlgoById = async (id: number) => {
-	const response = await fetch(`${API_BASE_URL}/${id}`);
-	const data = await response.json();
-	return data;
 };
 
 export const createAlgo = async (algo: TAlgoCreateDTO) => {
