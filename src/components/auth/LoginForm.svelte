@@ -38,10 +38,8 @@
 				}
 
 				const responseData = await response.json();
-				console.log(responseData);
 				const user: User = responseData.data;
 				setUser(user, rememberMe);
-				console.log("user", user);
 				notifications.add("success", "Connexion réussie");
 				window.location.hash = "#/";
 			} catch (error) {

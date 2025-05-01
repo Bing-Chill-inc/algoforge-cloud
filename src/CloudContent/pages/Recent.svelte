@@ -10,8 +10,8 @@
 
 	onMount(async () => {
 		try {
-			await fetchAlgosByUserId({ sorted: true });
-			algos = getAlgos();
+			await fetchAlgosByUserId({ sorted: "dateModification" });
+			algos = getAlgos().reverse();
 		} catch (e: any) {
 			error = e?.message;
 		} finally {
