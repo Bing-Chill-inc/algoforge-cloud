@@ -10,6 +10,13 @@
 	export let isTrash: boolean = false;
 
 	function handleRowClick(e: MouseEvent, algo: Algo) {
+		if (isTrash) {
+			notifications.add(
+				"warning",
+				"Impossible d'ouvrir un algorithme dans la corbeille",
+			);
+			return;
+		}
 		if (algo?.id === undefined) {
 			console.error("Erreur lors de l'ouverture de l'algorithme:", error);
 			notifications.add(
