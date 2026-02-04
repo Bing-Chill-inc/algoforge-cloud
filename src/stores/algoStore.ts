@@ -150,6 +150,26 @@ export const deleteAlgo = async (id: number) => {
 	return responseData;
 };
 
+export const restoreAlgo = async (id: number) => {
+	const response = await fetch(`${API_BASE_URL}/${id}/restore`, {
+		method: "PATCH",
+		headers: {
+			Authorization: `Bearer ${sessionData?.token}`,
+		},
+	});
+
+	const responseData = await response.json();
+
+	if (!response.ok) {
+		throw new Error(
+			`Impossible de restaurer l'algorithme: ${responseData.message}`,
+		);
+	}
+
+	algoStore.update((current) => current.filter((a) => a.id !== id));
+	return responseData;
+};
+
 // Fonctions pour récupérer les algorithmes
 export function getAlgos() {
 	return get(algoStore);

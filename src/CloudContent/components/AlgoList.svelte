@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { deleteAlgo } from "../../stores/algoStore";
+	import { deleteAlgo, restoreAlgo } from "../../stores/algoStore";
 	import { notifications } from "../../stores/notificationStore";
 	import type { Algo } from "../../utils/types";
 
@@ -37,6 +37,25 @@
 			notifications.add(
 				"error",
 				"Erreur lors de la suppression de l'algorithme",
+			);
+		}
+	}
+
+	async function handleRestoreClick(e: MouseEvent, algo: Algo): Promise<void> {
+		e.stopPropagation();
+
+		try {
+			await restoreAlgo(algo.id);
+			notifications.add("success", "Algorithme restauré avec succès");
+			window.location.reload();
+		} catch (error) {
+			console.error(
+				"Erreur lors de la restauration de l'algorithme:",
+				error,
+			);
+			notifications.add(
+				"error",
+				"Erreur lors de la restauration de l'algorithme",
 			);
 		}
 	}
@@ -83,6 +102,24 @@
 							{/if}
 						</td>
 						<td class="actions-cell">
+							{#if isTrash}
+								<button
+									class="action-btn restore"
+									aria-label="Restaurer l'algorithme"
+									data-title="Restaurer l'algorithme"
+									on:click={(e) => handleRestoreClick(e, algo)}
+								>
+									<svg
+										id="RestoreIcon"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg"
+										data-name="RestoreIcon"
+										><path
+											d="m13.014 1.055c-4.972-.46-9.156 3.498-9.664 8.288h-2.476c-.287 0-.534.191-.598.472-.064.28.07.565.33.699l3.207 1.638c.174.092.383.092.557 0l3.207-1.638c.259-.134.394-.418.33-.699-.064-.281-.311-.472-.598-.472h-2.264c.472-3.834 3.946-6.834 7.955-6.39 3.211.356 5.742 2.986 6.007 6.205.35 4.265-2.995 7.842-7.186 7.842-2.081 0-4.031-.886-5.355-2.433-.374-.437-1.054-.49-1.492-.103-.437.374-.483 1.034-.109 1.471 1.72 2.014 4.269 3.17 6.957 3.17 5.425 0 9.771-4.615 9.265-10.139-.363-3.976-3.554-7.214-7.532-7.582z"
+										/>
+									</svg>
+								</button>
+							{/if}
 							<button
 								class="action-btn delete"
 								aria-label="Supprimer l'algorithme"
@@ -180,6 +217,10 @@
 	.actions-cell {
 		position: relative;
 		z-index: 1;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 10px;
 	}
 
 	button {
@@ -193,7 +234,7 @@
 		width: fit-content;
 		height: 100%;
 		position: relative;
-		margin: 0 20px 0 auto;
+		margin: 0;
 		z-index: 2;
 
 		&::before {
